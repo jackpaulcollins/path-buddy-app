@@ -1,21 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from './auth/authSlice';
+import { Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout'
+import Public from './components/Public'
+import Login from './features/auth/Login'
+import Register from './features/auth/Register'
+import Welcome from './features/auth/Welcome'
+import RequireAuth from './features/auth/RequireAuth'
 
 function App() {
-  const currentUser = useSelector((state) => state.auth.currentUser )
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          { currentUser }
-        </p>
-      </header>
-    </div>
-  );
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/* public routes */}
+        <Route index element={<Public />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+
+        {/* protected routes */}
+        <Route element={<RequireAuth />}>
+          <Route path="welcome" element={<Welcome />} />
+        </Route>
+
+      </Route>
+    </Routes>
+  )
 }
 
 export default App;
