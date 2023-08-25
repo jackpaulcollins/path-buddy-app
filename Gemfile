@@ -48,5 +48,7 @@ end
 
 
 gem "devise", "~> 4.9"
+gem "devise-jwt"
+gem 'dotenv-rails'
 
 gem "byebug", "~> 11.1", :group => :development
