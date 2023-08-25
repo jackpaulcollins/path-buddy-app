@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { selectCurrentUser, selectCurrentToken } from './authSlice';
 
 function Welcome() {
