@@ -39,8 +39,6 @@ const Login = () => {
       const response = await register({ user: userInput }).unwrap();
       const { user } = response.data.data;
       const { authorization } = response.headers;
-
-      console.log(user, authorization);
       dispatch(setCredentials({ user, authorization }));
       setEmail('');
       setFirstName('');
@@ -77,7 +75,7 @@ const Login = () => {
     <section className="login">
       <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">{errMsg}</p>
 
-      <h1>Login</h1>
+      <h1>Sign up</h1>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">email:</label>
