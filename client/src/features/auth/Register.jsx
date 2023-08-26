@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setCredentials } from './authSlice';
 import { useRegisterMutation } from './authApiSlice';
 import Dropdown from '../../components/Dropdown';
+import systemTimeZones from '../../constants/timeZones';
 
 const Login = () => {
   const emailRef = useRef();
@@ -105,7 +106,7 @@ const Login = () => {
             <div>
               <div className="mt-2">
                 <label htmlFor="email">
-                  Email:
+                  <p className="block text-sm font-medium leading-6 text-gray-900">Email</p>
                   <input
                     type="email"
                     id="email"
@@ -123,7 +124,7 @@ const Login = () => {
             <div>
               <div className="mt-2">
                 <label htmlFor="firstName">
-                  First Name:
+                  <p className="block text-sm font-medium leading-6 text-gray-900">First name</p>
                   <input
                     type="text"
                     id="firstName"
@@ -141,7 +142,7 @@ const Login = () => {
             <div>
               <div>
                 <label htmlFor="lastName">
-                  Last name:
+                  <p className="block text-sm font-medium leading-6 text-gray-900">Last name</p>
                   <input
                     type="text"
                     id="lastName"
@@ -157,7 +158,7 @@ const Login = () => {
             </div>
             <div>
               <label htmlFor="password">
-                Password:
+                <p className="block text-sm font-medium leading-6 text-gray-900">Password</p>
                 <input
                   type="password"
                   id="password"
@@ -171,7 +172,7 @@ const Login = () => {
 
             <div>
               <label htmlFor="passwordConfirmation">
-                Password Confirmation:
+                <p className="block text-sm font-medium leading-6 text-gray-900">Password confirmation</p>
                 <input
                   type="password"
                   id="passwordConfirmation"
@@ -184,7 +185,11 @@ const Login = () => {
             </div>
 
             <div>
-              <Dropdown selectorFunc={handleTimeZoneInput} currentSelection={timeZone} dropdownOptions={['Pacific', 'Mountain', 'Central']} />
+              <Dropdown
+                selectorFunc={handleTimeZoneInput}
+                currentSelection={timeZone}
+                dropdownOptions={systemTimeZones}
+              />
             </div>
 
             <div className="flex items-center justify-between">
