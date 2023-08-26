@@ -43,7 +43,8 @@ const Login = () => {
       const response = await register({ user: userInput }).unwrap();
       const { user } = response.data;
       const { authorization } = response.headers;
-      dispatch(setCredentials({ user, authorization }));
+      const token = authorization.replace('Bearer ', '');
+      dispatch(setCredentials({ user, token }));
       setEmail('');
       setFirstName('');
       setLastName('');
@@ -102,7 +103,7 @@ const Login = () => {
                     ref={emailRef}
                     value={email}
                     onChange={handleEmailInput}
-                    autoComplete="off"
+                    autoComplete="on"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
                   />
