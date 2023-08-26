@@ -41,7 +41,7 @@ const Login = () => {
         password_confirmation: passwordConfirmation,
       };
       const response = await register({ user: userInput }).unwrap();
-      const { user } = response.data.data;
+      const { user } = response.data;
       const { authorization } = response.headers;
       dispatch(setCredentials({ user, authorization }));
       setEmail('');
@@ -97,7 +97,7 @@ const Login = () => {
                 <label htmlFor="email">
                   Email:
                   <input
-                    type="text"
+                    type="email"
                     id="email"
                     ref={emailRef}
                     value={email}
@@ -112,11 +112,11 @@ const Login = () => {
 
             <div>
               <div className="mt-2">
-                <label htmlFor="email">
+                <label htmlFor="firstName">
                   First Name:
                   <input
                     type="text"
-                    id="email"
+                    id="firstName"
                     ref={firstNameRef}
                     value={firstName}
                     onChange={handleFirstNameInput}
@@ -130,11 +130,11 @@ const Login = () => {
 
             <div>
               <div className="mt-2">
-                <label htmlFor="email">
+                <label htmlFor="lastName">
                   Last name:
                   <input
                     type="text"
-                    id="email"
+                    id="lastName"
                     ref={lastNameRef}
                     value={lastName}
                     onChange={handleLastNameInput}
