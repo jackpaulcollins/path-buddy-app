@@ -48,5 +48,6 @@ end
 
 gem 'jwt'
 gem 'dotenv-rails'
+gem 'subroutine', '~> 1.0', '>= 1.0.1'
 
 gem "fast_jsonapi", "~> 1.5"
