@@ -11,7 +11,7 @@ module Api
           if request.method == 'POST' && resource.persisted?
             render json: {
               status: { code: 200, message: 'Signed up sucessfully.' },
-              user: UserSerializer.new(resource).serializable_hash[:data][:attributes], status: :ok
+              user: UserSerializer.new(resource).serializable_hash[:data][:attributes]
             }, status: :ok
           elsif request.method == 'DELETE'
             render json: {
