@@ -4,8 +4,7 @@ module Api
   module V1
     module Users
       class SessionsController < ApplicationController
-        def create
-        end
+        def create; end
 
         private
 

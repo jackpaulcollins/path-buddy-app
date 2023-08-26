@@ -46,6 +46,7 @@ group :development do
   gem "byebug", "~> 11.1"
 end
 
+gem 'bcrypt', '~> 3.1'
 gem 'jwt'
 gem 'dotenv-rails'
 gem 'subroutine', '~> 1.0', '>= 1.0.1'

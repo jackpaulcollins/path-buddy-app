@@ -1,15 +1,20 @@
-import { useRef, useState, useEffect } from 'react';
+import {
+  useRef, useState, useEffect,
+} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
+
 import { setCredentials } from './authSlice';
 import { useRegisterMutation } from './authApiSlice';
+import Dropdown from '../../components/Dropdown';
 
 const Login = () => {
   const emailRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const errRef = useRef();
+  const [timeZone, setTimeZone] = useState('Time Zone');
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -37,6 +42,7 @@ const Login = () => {
         email,
         first_name: firstName,
         last_name: lastName,
+        time_zone: timeZone,
         password,
         password_confirmation: passwordConfirmation,
       };
@@ -65,6 +71,8 @@ const Login = () => {
       errRef.current.focus();
     }
   };
+
+  const handleTimeZoneInput = (tz) => setTimeZone(tz);
 
   const handleEmailInput = (e) => setEmail(e.target.value);
 
@@ -130,7 +138,7 @@ const Login = () => {
             </div>
 
             <div>
-              <div className="mt-2">
+              <div>
                 <label htmlFor="lastName">
                   Last name:
                   <input
@@ -146,7 +154,6 @@ const Login = () => {
                 </label>
               </div>
             </div>
-
             <div>
               <label htmlFor="password">
                 Password:
@@ -173,6 +180,10 @@ const Login = () => {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </label>
+            </div>
+
+            <div>
+              <Dropdown selectorFunc={handleTimeZoneInput} currentSelection={timeZone} dropdownOptions={['Pacific', 'Mountain', 'Central']} />
             </div>
 
             <div className="flex items-center justify-between">
