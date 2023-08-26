@@ -2,9 +2,7 @@ import {
   useRef, useState, useEffect,
 } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-
 import { useDispatch } from 'react-redux';
-
 import { setCredentials } from './authSlice';
 import { useRegisterMutation } from './authApiSlice';
 import Dropdown from '../../components/Dropdown';
@@ -34,6 +32,14 @@ const Login = () => {
     setErrMsg('');
   }, [email, firstName, lastName, password]);
 
+  const clearformState = () => {
+    setEmail('');
+    setFirstName('');
+    setLastName('');
+    setPassword('');
+    setPasswordConfirmation('');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -51,15 +57,10 @@ const Login = () => {
       const { authorization } = response.headers;
       const token = authorization.replace('Bearer ', '');
       dispatch(setCredentials({ user, token }));
-      setEmail('');
-      setFirstName('');
-      setLastName('');
-      setPassword('');
-      setPasswordConfirmation('');
+      clearformState();
       navigate('/welcome');
     } catch (err) {
       if (!err?.originalStatus) {
-        // isLoading: true until timeout occurs
         setErrMsg('No Server Response');
       } else if (err.originalStatus === 400) {
         setErrMsg('Missing Username or Password');
