@@ -28,7 +28,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const userData = await login({ email, password }).unwrap();
+      const userData = await login({ user: { email, password } }).unwrap();
       dispatch(setCredentials({ ...userData }));
       setEmail('');
       setPassword('');

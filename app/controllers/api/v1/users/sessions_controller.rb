@@ -4,9 +4,14 @@ module Api
   module V1
     module Users
       class SessionsController < ApplicationController
-        respond_to :json
+        def create
+        end
 
         private
+
+        def session_params
+          params.require(:user).permit(:email, :password)
+        end
       end
     end
   end

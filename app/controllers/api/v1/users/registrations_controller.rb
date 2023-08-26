@@ -4,7 +4,9 @@ module Api
   module V1
     module Users
       class RegistrationsController < ApplicationController
-        respond_to :json
+
+        def create
+        end
 
         private
 

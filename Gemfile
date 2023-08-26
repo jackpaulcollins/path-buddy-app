@@ -43,7 +43,7 @@ end
 
 group :development do
   gem 'rubocop', require: false
-  gem "byebug", "~> 11.1", require: false
+  gem "byebug", "~> 11.1"
 end
 
 gem 'jwt'
