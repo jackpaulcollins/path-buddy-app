@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-const Public = () => {
+function Public() {
   const content = (
     <section>
       <header>
@@ -9,13 +9,13 @@ const Public = () => {
       <main>
         <p>Your one stop shop for crafting and executing your path!</p>
       </main>
-      < Link to="/login">
+      <Link to="/login">
         Login
       </Link>
     </section>
-  )
+  );
 
-  return content
+  return content;
 }
 
 export default Public;
