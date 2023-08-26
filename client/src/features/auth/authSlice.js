@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
 const authSlice = createSlice({
@@ -9,7 +10,7 @@ const authSlice = createSlice({
       state.user = user;
       state.token = authorization;
     },
-    logOut: (state, action) => {
+    logOut: (state) => {
       state.user = null;
       state.token = null;
     },
