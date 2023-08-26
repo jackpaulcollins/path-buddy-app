@@ -46,7 +46,7 @@ group :development do
   gem "byebug", "~> 11.1", require: false
 end
 
-
+gem 'jwt'
 gem 'dotenv-rails'
 
 gem "fast_jsonapi", "~> 1.5"
