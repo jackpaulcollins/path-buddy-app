@@ -47,8 +47,6 @@ group :development do
 end
 
 
-gem "devise", "~> 4.9"
-gem "devise-jwt"
 gem 'dotenv-rails'
 
 gem "fast_jsonapi", "~> 1.5"
