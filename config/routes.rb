@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      devise_for :users, controllers: {
-        tokens: 'api/v1/users/tokens',
-        registrations: 'api/v1/users/registrations',
-        sessions: 'api/v1/users/sessions'
-      }
+      post 'users/sign_up', to: 'users/registrations#create'
+      post 'users/sign_in', to: 'users/sessions#create'
+      delete 'users/sign_out', to: 'users/sessions#destroy'
+      post 'users/refresh_token', to: 'users/tokens#refresh'
     end
   end
 end
