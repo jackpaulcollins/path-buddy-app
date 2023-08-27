@@ -8,7 +8,6 @@ Bundler.require(*Rails.groups)
 
 module PathBuddyApp
   class Application < Rails::Application
-    config.autoload_paths << Rails.root.join('app/ops')
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
