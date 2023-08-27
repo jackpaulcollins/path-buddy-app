@@ -7,12 +7,12 @@ import { setCredentials } from './authSlice';
 import { useRegisterMutation } from './authApiSlice';
 import Dropdown from '../../components/Dropdown';
 import systemTimeZones from '../../constants/timeZones';
+import ErrorAlert from '../../components/ErrorAlert';
 
 const Login = () => {
   const emailRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
-  const errRef = useRef();
   const [timeZone, setTimeZone] = useState('Time Zone');
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -60,17 +60,14 @@ const Login = () => {
       dispatch(setCredentials({ user, token }));
       clearformState();
       navigate('/welcome');
-    } catch (err) {
-      if (!err?.originalStatus) {
-        setErrMsg('No Server Response');
-      } else if (err.originalStatus === 400) {
-        setErrMsg('Missing Username or Password');
-      } else if (err.originalStatus === 401) {
+    } catch (error) {
+      if (error.status === 422) {
+        setErrMsg(error.data.data.error);
+      } else if (error.status === 401) {
         setErrMsg('Unauthorized');
       } else {
         setErrMsg('Login Failed');
       }
-      errRef.current.focus();
     }
   };
 
@@ -88,7 +85,7 @@ const Login = () => {
 
   const content = isLoading ? <h1>Loading...</h1> : (
     <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">{errMsg}</p>
+      {errMsg ? <ErrorAlert messages={[errMsg]} /> : null}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <img
           className="mx-auto h-10 w-auto"

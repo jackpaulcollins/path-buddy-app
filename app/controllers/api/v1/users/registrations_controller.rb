@@ -13,7 +13,7 @@ module Api
 
             render json: { user: op.user }, status: :ok
           else
-            render json: { error: "There was an issue creating your user, #{op.errors}" }, status: :unprocessable_entity
+            render json: { error: op.errors.full_messages.join('') }, status: :unprocessable_entity
           end
         end
 

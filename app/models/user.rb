@@ -6,7 +6,7 @@ class User < ApplicationRecord
   validates :jti, presence: true, uniqueness: true
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :time_zone, presence: true
+  validates :time_zone, inclusion: { in: System::TIME_ZONES }
 
   def refresh_jti_token
     update!(jti: SecureRandom.uuid)
