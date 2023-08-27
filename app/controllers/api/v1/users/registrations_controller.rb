@@ -19,10 +19,6 @@ module Api
 
         private
 
-        def append_token_to_response(token)
-          response.set_header('Authorization', "Bearer #{token}")
-        end
-
         def sign_up_params
           params.require(:user).permit(:email, :first_name, :last_name, :time_zone, :password, :password_confirmation)
         end

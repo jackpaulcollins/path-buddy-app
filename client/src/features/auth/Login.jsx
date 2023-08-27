@@ -28,8 +28,12 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const userData = await login({ user: { email, password } }).unwrap();
-      dispatch(setCredentials({ ...userData }));
+      const userInput = { email, password };
+      const response = await login({ user: userInput }).unwrap();
+      const { user } = response.data;
+      const { authorization } = response.headers;
+      const token = authorization.replace('Bearer ', '');
+      dispatch(setCredentials({ user, token }));
       setEmail('');
       setPassword('');
       navigate('/welcome');
