@@ -11,6 +11,5 @@ class User < ApplicationRecord
 
   def refresh_jti_token!
     update!(jti: SecureRandom.uuid)
-    reload
   end
 end
