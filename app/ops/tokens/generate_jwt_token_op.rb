@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Tokens
   class GenerateJwtTokenOp < ::Subroutine::Op
     integer :user_id

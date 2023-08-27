@@ -11,7 +11,7 @@ module Api
           user = op.user if op.submit!
           @token = ::Tokens::GenerateJwtTokenOp.submit!(user_id: user.id).token
 
-          render json: { user: user }
+          render json: { user: }
         end
 
         private
