@@ -9,7 +9,7 @@ import Dropdown from '../../components/Dropdown';
 import systemTimeZones from '../../constants/timeZones';
 import ErrorAlert from '../../components/ErrorAlert';
 
-const Login = () => {
+function Login() {
   const emailRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -83,9 +83,10 @@ const Login = () => {
 
   const handlePasswordConfirmationInput = (e) => setPasswordConfirmation(e.target.value);
 
-  const content = isLoading ? <h1>Loading...</h1> : (
+  const clearErrors = () => setErrMsg('');
+
+  const content = (
     <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-      {errMsg ? <ErrorAlert messages={[errMsg]} /> : null}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <img
           className="mx-auto h-10 w-auto"
@@ -98,6 +99,9 @@ const Login = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+        <div className="mb-8">
+          {errMsg ? <ErrorAlert clearErrors={clearErrors} messages={[errMsg]} /> : null}
+        </div>
         <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -212,6 +216,7 @@ const Login = () => {
             <div>
               <button
                 type="submit"
+                disabled={isLoading}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign in
@@ -269,5 +274,5 @@ const Login = () => {
   );
 
   return content;
-};
+}
 export default Login;
