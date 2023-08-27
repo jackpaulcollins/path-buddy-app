@@ -4,20 +4,23 @@ module Api
   module V1
     module Users
       class RegistrationsController < ApplicationController
-        after_action :append_token_to_response, only: [:create]
-
         def create
-          op = ::Users::UserRegistrationOp.new(sign_up_params)
-          user = op.user if op.submit!
-          @token = ::Tokens::GenerateJwtTokenOp.submit!(user_id: user.id).token
+          op = ::Users::UserRegistrationOp.submit(sign_up_params)
 
-          render json: { user: }
+          if op.user.present?
+            token = ::Tokens::GenerateJwtTokenOp.submit!(user: op.user).token
+            append_token_to_response(token)
+
+            render json: { user: op.user }, status: :ok
+          else
+            render json: { error: "There was an issue creating your user, #{op.errors}" }, status: :unprocessable_entity
+          end
         end
 
         private
 
-        def append_token_to_response
-          response.set_header('Authorization', "Bearer #{@token}")
+        def append_token_to_response(token)
+          response.set_header('Authorization', "Bearer #{token}")
         end
 
         def sign_up_params

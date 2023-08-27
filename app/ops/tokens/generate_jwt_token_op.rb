@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+require 'subroutine/association_fields'
+
 module Tokens
   class GenerateJwtTokenOp < BaseOp
+    include ::Subroutine::AssociationFields
     association :user
     outputs :token
 
