@@ -11,8 +11,10 @@ module Users
     def perform
       user = ::User.find_by(email: email)
 
-      # returns false if pw is incorrect
+      return errors.add(:base, "The email you entered hasn't been registered with an account.") unless user.present?
+
       validated_user = user.authenticate(password)
+      errors.add(:base, 'Password is incorrect') unless validated_user.present?
 
       output :user, validated_user
     end
