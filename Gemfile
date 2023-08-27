@@ -49,6 +49,6 @@ end
 gem 'bcrypt', '~> 3.1'
 gem 'jwt'
 gem 'dotenv-rails'
-gem 'subroutine', '~> 1.0', '>= 1.0.1'
+gem 'subroutine', git: 'https://github.com/guideline-tech/subroutine.git', branch: 'main'
 
 gem "fast_jsonapi", "~> 1.5"

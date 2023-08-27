@@ -7,4 +7,8 @@ class User < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :time_zone, presence: true
+
+  def refresh_jti_token
+    update!(jti: SecureRandom.uuid)
+  end
 end

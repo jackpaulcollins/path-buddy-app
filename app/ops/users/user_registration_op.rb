@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Users
-  class UserRegistrationOp < ::Subroutine::Op
+  class UserRegistrationOp < BaseOp
     string :email
     string :first_name
     string :last_name
