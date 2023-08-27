@@ -11,8 +11,7 @@ module Tokens
     end
 
     def generate_jwt_token(user_id)
-      exp = Time.now.to_i + 4 * 3600
-      exp_payload = { data: user_id, exp: exp}
+      exp_payload = { data: user_id, exp: System::JWT_TOKEN_EXPIRY_TIME }
       a = ENV['JWT_ALGORITHM']
       s = ENV['JWT_SECRET_KEY']
       JWT.encode exp_payload, s, a
