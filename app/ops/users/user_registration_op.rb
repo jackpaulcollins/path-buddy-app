@@ -25,7 +25,7 @@ module Users
         u.last_name = last_name
         u.password_digest = encrypted_password
         u.jti = SecureRandom.uuid
-        u.time_zone = 'pst'
+        u.time_zone = time_zone
       end
     end
   end

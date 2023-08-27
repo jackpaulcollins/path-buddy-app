@@ -4,28 +4,24 @@ module Api
   module V1
     module Users
       class RegistrationsController < ApplicationController
+        after_action :append_token_to_response, only: [:create]
+
         def create
           op = ::Users::UserRegistrationOp.new(sign_up_params)
-
           user = op.user if op.submit!
-          jwt_token = generate_jwt_token(user_id: user.id)
-          response.set_header('Authorization', "Bearer #{jwt_token}")
+          @token = ::Tokens::GenerateJwtTokenOp.submit!(user_id: user.id).token
 
-          render json: { user: }
+          render json: { user: user }
         end
 
         private
 
-        def generate_jwt_token(user_id:)
-          exp = Time.now.to_i + 4 * 3600
-          exp_payload = { data: user_id, exp: }
-          a = ENV['JWT_ALGORITHM']
-          s = ENV['JWT_SECRET_KEY']
-          JWT.encode exp_payload, s, a
+        def append_token_to_response
+          response.set_header('Authorization', "Bearer #{@token}")
         end
 
         def sign_up_params
-          params.require(:user).permit(:email, :first_name, :last_name, :password, :password_confirmation)
+          params.require(:user).permit(:email, :first_name, :last_name, :time_zone, :password, :password_confirmation)
         end
       end
     end
