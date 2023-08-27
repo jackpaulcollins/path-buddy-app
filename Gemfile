@@ -43,12 +43,12 @@ end
 
 group :development do
   gem 'rubocop', require: false
-  gem "byebug", "~> 11.1", require: false
+  gem "byebug", "~> 11.1"
 end
 
-
-gem "devise", "~> 4.9"
-gem "devise-jwt"
+gem 'bcrypt', '~> 3.1'
+gem 'jwt'
 gem 'dotenv-rails'
+gem 'subroutine', git: 'https://github.com/guideline-tech/subroutine.git', branch: 'main'
 
 gem "fast_jsonapi", "~> 1.5"

@@ -3,31 +3,25 @@
 module Api
   module V1
     module Users
-      class SessionsController < Devise::SessionsController
-        include RackSessionFix
-        respond_to :json
+      class SessionsController < ApplicationController
+        def create
+          op = ::Users::LoginOp.submit(session_params)
+
+          if op.user.present?
+            op.user.refresh_jti_token!
+            token = ::Tokens::GenerateJwtTokenOp.submit!(user: op.user).token
+            append_token_to_response(token)
+
+            render json: { user: op.user }, status: :ok
+          else
+            render json: { error: op.errors.full_messages.join('') }, status: :unauthorized
+          end
+        end
 
         private
 
-        def respond_with(resource, _opts = {})
-          render json: {
-            status: { code: 200, message: 'Logged in sucessfully.' },
-            user: UserSerializer.new(resource).serializable_hash[:data][:attributes]
-          }, status: :ok
-        end
-
-        def respond_to_on_destroy
-          if current_user
-            render json: {
-              status: 200,
-              message: 'logged out successfully'
-            }, status: :ok
-          else
-            render json: {
-              status: 401,
-              message: "Couldn't find an active session."
-            }, status: :unauthorized
-          end
+        def session_params
+          params.require(:user).permit(:email, :password)
         end
       end
     end

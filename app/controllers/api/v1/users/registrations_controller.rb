@@ -3,31 +3,24 @@
 module Api
   module V1
     module Users
-      class RegistrationsController < Devise::RegistrationsController
-        include RackSessionFix
-        respond_to :json
+      class RegistrationsController < ApplicationController
+        def create
+          op = ::Users::UserRegistrationOp.submit(sign_up_params)
 
-        def respond_with(resource, _opts = {})
-          if request.method == 'POST' && resource.persisted?
-            render json: {
-              status: { code: 200, message: 'Signed up sucessfully.' },
-              user: UserSerializer.new(resource).serializable_hash[:data][:attributes]
-            }, status: :ok
-          elsif request.method == 'DELETE'
-            render json: {
-              status: { code: 200, message: 'Account deleted successfully.' }
-            }, status: :ok
+          if op.user.present?
+            token = ::Tokens::GenerateJwtTokenOp.submit!(user: op.user).token
+            append_token_to_response(token)
+
+            render json: { user: op.user }, status: :ok
           else
-            render json: {
-              status: { code: 422, message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}" }
-            }, status: :unprocessable_entity
+            render json: { error: op.errors.full_messages.join('') }, status: :unprocessable_entity
           end
         end
 
         private
 
         def sign_up_params
-          params.require(:user).permit(:email, :first_name, :last_name, :password, :password_confirmation)
+          params.require(:user).permit(:email, :first_name, :last_name, :time_zone, :password, :password_confirmation)
         end
       end
     end

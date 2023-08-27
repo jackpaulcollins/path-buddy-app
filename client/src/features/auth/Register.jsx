@@ -1,15 +1,19 @@
-import { useRef, useState, useEffect } from 'react';
+import {
+  useRef, useState, useEffect,
+} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-
 import { useDispatch } from 'react-redux';
 import { setCredentials } from './authSlice';
 import { useRegisterMutation } from './authApiSlice';
+import Dropdown from '../../components/Dropdown';
+import systemTimeZones from '../../constants/timeZones';
+import ErrorAlert from '../../components/ErrorAlert';
 
-const Login = () => {
+function Login() {
   const emailRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
-  const errRef = useRef();
+  const [timeZone, setTimeZone] = useState('Time Zone');
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -29,6 +33,14 @@ const Login = () => {
     setErrMsg('');
   }, [email, firstName, lastName, password]);
 
+  const clearformState = () => {
+    setEmail('');
+    setFirstName('');
+    setLastName('');
+    setPassword('');
+    setPasswordConfirmation('');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,6 +49,7 @@ const Login = () => {
         email,
         first_name: firstName,
         last_name: lastName,
+        time_zone: timeZone,
         password,
         password_confirmation: passwordConfirmation,
       };
@@ -45,26 +58,20 @@ const Login = () => {
       const { authorization } = response.headers;
       const token = authorization.replace('Bearer ', '');
       dispatch(setCredentials({ user, token }));
-      setEmail('');
-      setFirstName('');
-      setLastName('');
-      setPassword('');
-      setPasswordConfirmation('');
+      clearformState();
       navigate('/welcome');
-    } catch (err) {
-      if (!err?.originalStatus) {
-        // isLoading: true until timeout occurs
-        setErrMsg('No Server Response');
-      } else if (err.originalStatus === 400) {
-        setErrMsg('Missing Username or Password');
-      } else if (err.originalStatus === 401) {
+    } catch (error) {
+      if (error.status === 422) {
+        setErrMsg(error.data.data.error);
+      } else if (error.status === 401) {
         setErrMsg('Unauthorized');
       } else {
         setErrMsg('Login Failed');
       }
-      errRef.current.focus();
     }
   };
+
+  const handleTimeZoneInput = (tz) => setTimeZone(tz);
 
   const handleEmailInput = (e) => setEmail(e.target.value);
 
@@ -76,9 +83,10 @@ const Login = () => {
 
   const handlePasswordConfirmationInput = (e) => setPasswordConfirmation(e.target.value);
 
-  const content = isLoading ? <h1>Loading...</h1> : (
+  const clearErrors = () => setErrMsg('');
+
+  const content = (
     <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">{errMsg}</p>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <img
           className="mx-auto h-10 w-auto"
@@ -91,12 +99,15 @@ const Login = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+        <div className="mb-8">
+          {errMsg ? <ErrorAlert clearErrors={clearErrors} messages={[errMsg]} /> : null}
+        </div>
         <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <div className="mt-2">
                 <label htmlFor="email">
-                  Email:
+                  <p className="block text-sm font-medium leading-6 text-gray-900">Email</p>
                   <input
                     type="email"
                     id="email"
@@ -114,7 +125,7 @@ const Login = () => {
             <div>
               <div className="mt-2">
                 <label htmlFor="firstName">
-                  First Name:
+                  <p className="block text-sm font-medium leading-6 text-gray-900">First name</p>
                   <input
                     type="text"
                     id="firstName"
@@ -130,9 +141,9 @@ const Login = () => {
             </div>
 
             <div>
-              <div className="mt-2">
+              <div>
                 <label htmlFor="lastName">
-                  Last name:
+                  <p className="block text-sm font-medium leading-6 text-gray-900">Last name</p>
                   <input
                     type="text"
                     id="lastName"
@@ -146,10 +157,9 @@ const Login = () => {
                 </label>
               </div>
             </div>
-
             <div>
               <label htmlFor="password">
-                Password:
+                <p className="block text-sm font-medium leading-6 text-gray-900">Password</p>
                 <input
                   type="password"
                   id="password"
@@ -163,7 +173,7 @@ const Login = () => {
 
             <div>
               <label htmlFor="passwordConfirmation">
-                Password Confirmation:
+                <p className="block text-sm font-medium leading-6 text-gray-900">Password confirmation</p>
                 <input
                   type="password"
                   id="passwordConfirmation"
@@ -173,6 +183,14 @@ const Login = () => {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </label>
+            </div>
+
+            <div>
+              <Dropdown
+                selectorFunc={handleTimeZoneInput}
+                currentSelection={timeZone}
+                dropdownOptions={systemTimeZones}
+              />
             </div>
 
             <div className="flex items-center justify-between">
@@ -198,6 +216,7 @@ const Login = () => {
             <div>
               <button
                 type="submit"
+                disabled={isLoading}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign in
@@ -255,5 +274,5 @@ const Login = () => {
   );
 
   return content;
-};
+}
 export default Login;
