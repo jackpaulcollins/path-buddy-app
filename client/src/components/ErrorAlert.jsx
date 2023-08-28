@@ -27,7 +27,7 @@ function ErrorAlert({ messages, clearErrors }) {
             </h3>
             <div className="mt-2 text-sm text-red-700">
               <ul className="list-disc space-y-1 pl-5">
-                {messages.map((message) => <li>{message}</li>)}
+                {messages.map((message) => <li key={message}>{message}</li>)}
               </ul>
             </div>
           </div>
