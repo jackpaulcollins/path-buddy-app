@@ -33,6 +33,7 @@ function Login() {
       const { authorization } = response.headers;
       const token = authorization.replace('Bearer ', '');
       dispatch(setCredentials({ user, token }));
+      localStorage.setItem('PB-JWT-TOKEN', token);
       setEmail('');
       setPassword('');
       navigate('/dashboard');

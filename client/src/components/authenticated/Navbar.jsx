@@ -17,9 +17,9 @@ function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = (e) => {
-    e.preventDefault();
+  const handleLogout = () => {
     dispatch(logOut());
+    localStorage.removeItem('PB-JWT-TOKEN');
     navigate('/login');
   };
 
