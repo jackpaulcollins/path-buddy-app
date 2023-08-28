@@ -3,7 +3,7 @@ import Layout from './components/Layout';
 import Public from './components/Public';
 import Login from './features/auth/Login';
 import Register from './features/auth/Register';
-import Welcome from './features/auth/Welcome';
+import Dashboard from './components/authenticated/Dashboard';
 import RequireAuth from './features/auth/RequireAuth';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
 
         {/* protected routes */}
         <Route element={<RequireAuth />}>
-          <Route path="welcome" element={<Welcome />} />
+          <Route path="dashboard" element={<Dashboard />} />
         </Route>
 
       </Route>

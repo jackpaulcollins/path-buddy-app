@@ -35,7 +35,7 @@ function Login() {
       dispatch(setCredentials({ user, token }));
       setEmail('');
       setPassword('');
-      navigate('/welcome');
+      navigate('/dashboard');
     } catch (error) {
       if (error.status === 401) {
         setErrMsg(error.data.data.error);
