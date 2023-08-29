@@ -16,6 +16,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials },
       }),
     }),
+    tokenRefresh: builder.mutation({
+      query: (token) => ({
+        url: 'api/v1/users/token_refresh',
+        method: 'GET',
+        body: { token },
+      }),
+    }),
   }),
 });
 
