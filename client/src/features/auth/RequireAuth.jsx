@@ -1,28 +1,37 @@
-/* eslint-disable no-console */
+import { useState, useEffect } from 'react';
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectCurrentToken } from './authSlice';
+import { useVerifyTokenMutation } from './authApiSlice';
+import FullScreenLoading from '../../components/FullScreenLoading';
 
 function RequireAuth() {
+  const [authenticated, setAuthenticated] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
+  const [verifyToken] = useVerifyTokenMutation();
+  const token = useSelector(selectCurrentToken);
 
-  const verifyToken = () => {
-    const token = useSelector(selectCurrentToken);
+  useEffect(() => {
+    const authenticateToken = async () => {
+      const response = await verifyToken({ token });
+      console.log(response);
+      setIsLoading(false);
+      setAuthenticated(true);
+    };
+
     if (token) {
-      // verify
-
-      console.log('true');
-      return true;
+      authenticateToken()
+        .catch(console.error);
     }
+  }, []);
 
-    console.log('false');
-    return false;
-  };
-
-  const authenticated = !!verifyToken();
+  if (isLoading === true) {
+    return <FullScreenLoading />;
+  }
 
   return (
-    authenticated
+    authenticated && !isLoading
       ? <Outlet />
       : <Navigate to="/public" state={{ from: location }} replace />
   );
