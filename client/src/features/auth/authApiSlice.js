@@ -16,10 +16,25 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials },
       }),
     }),
+    refreshToken: builder.mutation({
+      query: (token) => ({
+        url: 'api/v1/tokens/refresh',
+        method: 'GET',
+        body: { token },
+      }),
+    }),
+    verifyToken: builder.mutation({
+      query: (token) => ({
+        url: 'api/v1/tokens/verify',
+        method: 'POST',
+        body: token,
+      }),
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
   useRegisterMutation,
+  useVerifyTokenMutation,
 } = authApiSlice;

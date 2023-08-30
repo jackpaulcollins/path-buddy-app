@@ -7,3 +7,6 @@ en:
             time_zone:
               inclusion:
                 "unrecognized."
+            email:
+              uniqueness:
+                "has already been taken."

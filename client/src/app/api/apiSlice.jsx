@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { setCredentials, logout } from '../../features/auth/authSlice';
+import { setCredentials, logOut } from '../../features/auth/authSlice';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:3000',
@@ -33,7 +33,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       api.dispatch(setCredentials({ ...refreshResult.data, user }));
       result = await baseQuery(args, api, extraOptions);
     } else {
-      api.dispatch(logout());
+      api.dispatch(logOut);
     }
   }
 

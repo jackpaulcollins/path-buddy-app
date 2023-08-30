@@ -13,6 +13,11 @@ module Users
     protected
 
     def perform
+      unless password == password_confirmation
+        return errors.add(:base,
+                          "Password and password confirmation don't match")
+      end
+
       encrypted_password = ::Users::PasswordCreateOp.submit!(clear_text_password: password).encrypted_password
       user = create_user!(encrypted_password)
       output :user, user

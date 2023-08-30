@@ -13,7 +13,7 @@ function Login() {
   const emailRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
-  const [timeZone, setTimeZone] = useState('Time Zone');
+  const [timeZone, setTimeZone] = useState('');
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -41,8 +41,33 @@ function Login() {
     setPasswordConfirmation('');
   };
 
+  const allRequiredFieldsPresent = () => {
+    const missingFields = [];
+
+    if (!timeZone) missingFields.push('Time Zone');
+    if (!email) missingFields.push('Email');
+    if (!firstName) missingFields.push('First Name');
+    if (!lastName) missingFields.push('Last Name');
+    if (!password) missingFields.push('Password');
+    if (!passwordConfirmation) missingFields.push('Password Confirmation');
+
+    if (missingFields.length > 0) {
+      const missingFieldsString = missingFields.join(', ');
+      setErrMsg(`Please fill in the following required fields: ${missingFieldsString}.`);
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const readyForSubmit = !!allRequiredFieldsPresent();
+
+    if (!readyForSubmit) {
+      return;
+    }
 
     try {
       const userInput = {
@@ -59,7 +84,7 @@ function Login() {
       const token = authorization.replace('Bearer ', '');
       dispatch(setCredentials({ user, token }));
       clearformState();
-      navigate('/welcome');
+      navigate('/dashboard');
     } catch (error) {
       if (error.status === 422) {
         setErrMsg(error.data.data.error);
@@ -190,21 +215,11 @@ function Login() {
                 selectorFunc={handleTimeZoneInput}
                 currentSelection={timeZone}
                 dropdownOptions={systemTimeZones}
+                placeHolder="Time Zone"
               />
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center justify-evenly">
-                <label htmlFor="remember-me">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                </label>
-                <p className="ml-3 block text-sm leading-6 text-gray-900">Remember me</p>
-              </div>
 
               <div className="text-sm leading-6">
                 <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-500">

@@ -4,7 +4,9 @@ Rails.application.routes.draw do
       post 'users/', to: 'users/registrations#create'
       post 'users/sign_in', to: 'users/sessions#create'
       delete 'users/sign_out', to: 'users/sessions#destroy'
-      post 'users/refresh_token', to: 'users/tokens#refresh'
+
+      post 'tokens/verify', to: 'tokens/tokens#verify'
+      post 'tokens/token', to: 'tokens/tokens#refresh'
     end
   end
 end
