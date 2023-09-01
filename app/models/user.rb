@@ -12,4 +12,8 @@ class User < ApplicationRecord
   def refresh_jti_token!
     update!(jti: SecureRandom.uuid)
   end
+
+  def valid_jti?(token_jti)
+    jti == token_jti
+  end
 end
