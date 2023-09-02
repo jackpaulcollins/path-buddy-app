@@ -9,7 +9,11 @@ module Api
 
           verified = op.verification_status
 
-          render json: { verified: }, status: :ok
+          if verified
+            render json: { verified: }, status: :ok
+          else
+            render json: { verified: }, status: :forbidden
+          end
         end
 
         private

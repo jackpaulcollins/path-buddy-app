@@ -20,13 +20,13 @@ function RequireAuth() {
       setAuthenticated(verified);
     };
 
-    // if there's a token, verify it and let the func determine
-    // whether or not we proceed
-    // if there's no token then simply redirect to public page
-
     if (token) {
       authenticateToken()
-        .catch(console.error);
+        .catch((error) => {
+          const { verified } = error.data;
+          setIsLoading(false);
+          setAuthenticated(verified);
+        });
     } else {
       setIsLoading(false);
       setAuthenticated(false);
