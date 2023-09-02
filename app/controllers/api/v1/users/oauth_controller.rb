@@ -8,6 +8,7 @@ module Api
           token_data = JWT.decode(oauth_params[:token], nil, false).first
 
           if user = ::User.find_by_email(token_data["email"])
+            user.refresh_jti_token!
             token = generate_new_token(user)
             append_token_to_response(token)
 
@@ -24,7 +25,6 @@ module Api
         private
 
         def generate_new_token(user)
-          user.refresh_jti_token!
           ::Tokens::GenerateJwtTokenOp.submit!(user: user).token
         end
 

@@ -14,10 +14,10 @@ function RequireAuth() {
 
   useEffect(() => {
     const authenticateToken = async () => {
-      const response = await verifyToken({ token });
-      console.log(response);
+      const response = await verifyToken({ token }).unwrap();
+      const { verified } = response.data;
       setIsLoading(false);
-      setAuthenticated(true);
+      setAuthenticated(verified);
     };
 
     // if there's a token, verify it and let the func determine
