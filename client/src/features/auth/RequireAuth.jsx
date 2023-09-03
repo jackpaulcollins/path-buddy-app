@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectCurrentToken } from './authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCurrentToken, logOut } from './authSlice';
 import { useVerifyTokenMutation } from './authApiSlice';
 import FullScreenLoading from '../../components/FullScreenLoading';
 
@@ -11,22 +11,24 @@ function RequireAuth() {
   const location = useLocation();
   const [verifyToken] = useVerifyTokenMutation();
   const token = useSelector(selectCurrentToken);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const authenticateToken = async () => {
-      const response = await verifyToken({ token });
-      console.log(response);
+      const response = await verifyToken({ token }).unwrap();
+      const { verified } = response.data;
       setIsLoading(false);
-      setAuthenticated(true);
+      setAuthenticated(verified);
     };
-
-    // if there's a token, verify it and let the func determine
-    // whether or not we proceed
-    // if there's no token then simply redirect to public page
 
     if (token) {
       authenticateToken()
-        .catch(console.error);
+        .catch((error) => {
+          const { verified } = error.data;
+          dispatch(logOut());
+          setIsLoading(false);
+          setAuthenticated(verified);
+        });
     } else {
       setIsLoading(false);
       setAuthenticated(false);

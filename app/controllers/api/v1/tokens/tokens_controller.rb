@@ -5,8 +5,13 @@ module Api
     module Tokens
       class TokensController < ApplicationController
         def verify
-          sleep 2
-          render json: { data: 'true' }
+          verified = ::Tokens::VerifyJwtTokenOp.submit!(token: token_params).verification_status
+
+          if verified
+            render json: { verified: }, status: :ok
+          else
+            render json: { verified: }, status: :forbidden
+          end
         end
 
         private
