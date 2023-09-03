@@ -13,10 +13,6 @@ function App() {
       clientId="783783941258-m7cc9mb9rodak6hmsmlnv7kr0471tn5v.apps.googleusercontent.com"
     >
       <Routes>
-        {/* the root route ("/") mounts the dashboard
-if a token is present & valid we redirect to /public
-and the user can navigate to /register or /login */}
-
         {/* protected routes */}
         <Route element={<RequireAuth />}>
           <Route path="dashboard/*" element={<Dashboard />} />
