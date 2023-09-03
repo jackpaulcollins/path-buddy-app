@@ -23,24 +23,20 @@ module Users
     protected
 
     def perform
-      name.split[0]
-      name.split[1]
-      SecureRandom.hex(8)
-      System::TIME_ZONES[0]
-
-      user = create_user!
+      pw = SecureRandom.hex(8)
+      user = create_user!(pw)
 
       output :user, user
     end
 
-    def create_user!
+    def create_user!(password)
       ::Users::UserRegistrationOp.submit!(
         email: email,
-        first_name: first_name,
-        last_name: last_name,
+        first_name: name.split[0],
+        last_name: name.split[1],
         password: password,
         password_confirmation: password,
-        time_zone: time_zone
+        time_zone: System::TIME_ZONES[0]
       ).user
     end
   end

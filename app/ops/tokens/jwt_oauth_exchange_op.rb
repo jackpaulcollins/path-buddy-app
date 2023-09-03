@@ -9,7 +9,7 @@ module Tokens
     protected
 
     def perform
-      claims = get_claims_from_token
+      claims = claims_from_token
 
       user = try_to_find_user_from_token(claims['email'])
 
@@ -22,7 +22,7 @@ module Tokens
       output :user, user
     end
 
-    def get_claims_from_token
+    def claims_from_token
       JWT.decode(token_data[:token], nil, false).first
     end
 
