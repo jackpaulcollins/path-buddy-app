@@ -19,7 +19,7 @@ and the user can navigate to /register or /login */}
 
         {/* protected routes */}
         <Route element={<RequireAuth />}>
-          <Route index element={<Dashboard />} />
+          <Route path="dashboard/*" element={<Dashboard />} />
         </Route>
 
         {/* public routes */}

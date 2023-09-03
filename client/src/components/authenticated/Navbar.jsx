@@ -38,13 +38,14 @@ function Navbar() {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    <Link className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" to="/login">
+                    <Link className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" to="/">
                       Dashboard
                     </Link>
                     <Link
+                      to="new-path"
                       className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                     >
-                      My Paths
+                      New Path
                     </Link>
                   </div>
                 </div>
@@ -153,7 +154,7 @@ function Navbar() {
                 Dashboard
               </Link>
               <Link
-                to="/login"
+                to="/dashboard/new-path"
                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
               >
                 My Paths
