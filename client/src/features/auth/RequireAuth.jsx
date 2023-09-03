@@ -42,7 +42,7 @@ function RequireAuth() {
   return (
     authenticated && !isLoading
       ? <Outlet />
-      : <Navigate to="/public" state={{ from: location }} replace />
+      : <Navigate to="/" state={{ from: location }} replace />
   );
 }
 export default RequireAuth;
