@@ -38,7 +38,7 @@ function Navbar() {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    <Link className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" to="/">
+                    <Link className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" to="/dashboard">
                       Dashboard
                     </Link>
                     <Link
