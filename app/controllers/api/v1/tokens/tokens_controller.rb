@@ -5,9 +5,7 @@ module Api
     module Tokens
       class TokensController < ApplicationController
         def verify
-          op = ::Tokens::VerifyJwtTokenOp.submit!(token: token_params)
-
-          verified = op.verification_status
+          verified = ::Tokens::VerifyJwtTokenOp.submit!(token: token_params).verification_status
 
           if verified
             render json: { verified: }, status: :ok
