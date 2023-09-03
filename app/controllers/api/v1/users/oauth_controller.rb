@@ -9,7 +9,7 @@ module Api
           token = generate_new_token(user)
           append_token_to_response(token)
 
-          render json: { user: }, status: :ok
+          render json: { user: UserSerializer.new(user).serializable_hash[:data][:attributes] }, status: :ok
         end
 
         private

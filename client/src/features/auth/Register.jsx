@@ -85,7 +85,7 @@ function Login() {
       const token = authorization.replace('Bearer ', '');
       dispatch(setCredentials({ user, token }));
       clearformState();
-      navigate('/dashboard');
+      navigate('/');
     } catch (error) {
       if (error.status === 422) {
         setErrMsg(error.data.data.error);
