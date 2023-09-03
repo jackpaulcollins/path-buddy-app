@@ -3,7 +3,7 @@ import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCurrentToken, logOut } from './authSlice';
 import { useVerifyTokenMutation } from './authApiSlice';
-import FullScreenLoading from '../../components/FullScreenLoading';
+import FullScreenLoading from '../../components/general/FullScreenLoading';
 
 function RequireAuth() {
   const [authenticated, setAuthenticated] = useState(null);

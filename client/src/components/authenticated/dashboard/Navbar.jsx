@@ -5,7 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { logOut, selectCurrentUser } from '../../features/auth/authSlice';
+import { logOut, selectCurrentUser } from '../../../features/auth/authSlice';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');

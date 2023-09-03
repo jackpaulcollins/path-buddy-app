@@ -1,10 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-
-import Public from './components/Public';
+import Public from './components/public/Public';
 import Login from './features/auth/Login';
 import Register from './features/auth/Register';
-import Dashboard from './components/authenticated/Dashboard';
+import Dashboard from './components/authenticated/dashboard/Dashboard';
 import RequireAuth from './features/auth/RequireAuth';
 
 function App() {
