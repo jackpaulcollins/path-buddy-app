@@ -5,15 +5,7 @@ module Api
     module Users
       class OauthController < ApplicationController
         def login_or_register
-          token_data = JWT.decode(oauth_params[:token], nil, false).first
-
-          user = ::User.find_by_email(token_data['email'])
-
-          if user.nil?
-            user = ::Users::RegisterFromOauthOp.submit!(email: token_data['email'], name: token_data['name']).user
-          end
-
-          user.refresh_jti_token!
+          user = ::Tokens::JwtOauthExchangeOp.submit!(token_data: oauth_params).user
           token = generate_new_token(user)
           append_token_to_response(token)
 
