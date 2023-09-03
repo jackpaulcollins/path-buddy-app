@@ -12,7 +12,7 @@ module Api
             token = ::Tokens::GenerateJwtTokenOp.submit!(user: op.user).token
             append_token_to_response(token)
 
-            render json: { user: op.user }, status: :ok
+            render json: { user: UserSerializer.new(op.user).serializable_hash[:data][:attributes] }, status: :ok
           else
             render json: { error: op.errors.full_messages.join('') }, status: :unauthorized
           end
