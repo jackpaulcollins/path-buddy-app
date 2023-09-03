@@ -23,7 +23,7 @@ and the user can navigate to /register or /login */}
         </Route>
 
         {/* public routes */}
-        <Route path="public" element={<Public />} />
+        <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
       </Routes>
