@@ -3,6 +3,7 @@
 module Tokens
   class JwtOauthExchangeOp < BaseOp
     object :token_data
+    validates :token_data, presence: true
     outputs :user
 
     protected

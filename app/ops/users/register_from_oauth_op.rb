@@ -14,6 +14,10 @@ module Users
   class RegisterFromOauthOp < BaseOp
     string :email
     string :name
+
+    validates :email, presence: true
+    validates :name, presence: true
+
     outputs :user
 
     protected
