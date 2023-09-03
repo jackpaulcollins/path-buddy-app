@@ -37,7 +37,7 @@ function Login() {
       localStorage.setItem('PB-JWT-TOKEN', token);
       setEmail('');
       setPassword('');
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       if (error.status === 401) {
         setErrMsg(error.data.data.error);

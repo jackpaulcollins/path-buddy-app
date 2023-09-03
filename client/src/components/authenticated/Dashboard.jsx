@@ -1,6 +1,8 @@
+import { Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectCurrentToken, selectCurrentUser } from '../../features/auth/authSlice';
 import Navbar from './Navbar';
+import NewPath from './paths/NewPath';
 
 function Welcome() {
   const user = useSelector(selectCurrentUser);
@@ -18,6 +20,9 @@ function Welcome() {
           {token}
         </p>
       </section>
+      <Routes>
+        <Route path="/new-path" element={<NewPath />} />
+      </Routes>
     </div>
   );
 

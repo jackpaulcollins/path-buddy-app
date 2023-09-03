@@ -19,7 +19,7 @@ function GoogleOAuthProvider() {
     dispatch(setCredentials({ user, token: response_token }));
     localStorage.setItem('PB-JWT-TOKEN', response_token);
 
-    navigate('/');
+    navigate('/dashboard');
   }
 
   const responseMessage = (response) => {
