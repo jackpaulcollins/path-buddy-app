@@ -10,11 +10,7 @@ function Dahboard() {
       <Navbar />
       <Routes>
         <Route path="/" element={<DashboardTimeline />} />
-      </Routes>
-      <Routes>
         <Route path="/my-paths" element={<MyPaths />} />
-      </Routes>
-      <Routes>
         <Route path="/new-path" element={<NewPathWizard />} />
       </Routes>
     </div>
