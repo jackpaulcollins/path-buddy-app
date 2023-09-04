@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './Navbar';
-import NewPath from '../paths/NewPath';
+import MyPaths from '../paths/MyPaths';
 import DashboardTimeline from './DashboardTimeline';
 
 function Dahboard() {
@@ -11,7 +11,7 @@ function Dahboard() {
         <Route path="/" element={<DashboardTimeline />} />
       </Routes>
       <Routes>
-        <Route path="/new-path" element={<NewPath />} />
+        <Route path="/my-paths" element={<MyPaths />} />
       </Routes>
     </div>
   );

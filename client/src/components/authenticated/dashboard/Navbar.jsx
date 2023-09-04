@@ -52,10 +52,10 @@ function Navbar() {
                       Dashboard
                     </Link>
                     <Link
-                      to="new-path"
-                      className={activeLink('new-path') ? 'bg-gray-900 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
+                      to="my-paths"
+                      className={activeLink('my-paths') ? 'bg-gray-900 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
                     >
-                      New Path
+                      My Paths
                     </Link>
                   </div>
                 </div>
@@ -164,8 +164,8 @@ function Navbar() {
                 Dashboard
               </Link>
               <Link
-                to="new-path"
-                className={activeLink('new-path') ? 'block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white' : 'block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
+                to="my-paths"
+                className={activeLink('my-paths') ? 'block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white' : 'block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
 
               >
                 New Path
