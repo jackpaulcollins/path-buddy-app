@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import { Fragment } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -15,6 +15,13 @@ function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(selectCurrentUser);
+  const location = useLocation();
+  const { pathname } = location;
+
+  const activeLink = (linkIdentifier) => {
+    const path = pathname.split('/');
+    return (linkIdentifier === path[path.length - 1]);
+  };
 
   const handleLogout = () => {
     dispatch(logOut());
@@ -38,12 +45,15 @@ function Navbar() {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    <Link className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" to="/dashboard">
+                    <Link
+                      to="/dashboard"
+                      className={activeLink('dashboard') ? 'bg-gray-900 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
+                    >
                       Dashboard
                     </Link>
                     <Link
                       to="new-path"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                      className={activeLink('new-path') ? 'bg-gray-900 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
                     >
                       New Path
                     </Link>
@@ -148,16 +158,17 @@ function Navbar() {
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               <Link
-                to="/login"
-                className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
+                to="/dashboard"
+                className={activeLink('dashboard') ? 'block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white' : 'block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
               >
                 Dashboard
               </Link>
               <Link
-                to="/dashboard/new-path"
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                to="new-path"
+                className={activeLink('new-path') ? 'block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white' : 'block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
+
               >
-                My Paths
+                New Path
               </Link>
             </div>
             <div className="border-t border-gray-700 pb-3 pt-4">
