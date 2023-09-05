@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import { Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
@@ -56,6 +58,12 @@ function Navbar() {
                       className={activeLink('my-paths') ? 'bg-gray-900 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
                     >
                       My Paths
+                    </Link>
+                    <Link
+                      to="new-path"
+                      className={activeLink('new-path') ? 'bg-gray-900 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
+                    >
+                      <FontAwesomeIcon icon={faPlus} style={{ color: '#ffffff' }} />
                     </Link>
                   </div>
                 </div>
@@ -168,7 +176,14 @@ function Navbar() {
                 className={activeLink('my-paths') ? 'block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white' : 'block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
 
               >
-                New Path
+                My Paths
+              </Link>
+              <Link
+                to="new-path"
+                className={activeLink('new-path') ? 'block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white' : 'block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
+
+              >
+                Create a Path
               </Link>
             </div>
             <div className="border-t border-gray-700 pb-3 pt-4">
