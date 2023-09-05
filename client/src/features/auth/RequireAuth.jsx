@@ -12,6 +12,7 @@ function RequireAuth() {
   const [verifyToken] = useVerifyTokenMutation();
   const token = useSelector(selectCurrentToken);
   const dispatch = useDispatch();
+  const { pathname } = location;
 
   useEffect(() => {
     const authenticateToken = async () => {
@@ -33,9 +34,9 @@ function RequireAuth() {
       setIsLoading(false);
       setAuthenticated(false);
     }
-  }, []);
+  }, [pathname]);
 
-  if (isLoading === true) {
+  if (isLoading) {
     return <FullScreenLoading />;
   }
 
