@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './Navbar';
 import MyPaths from '../paths/MyPaths';
 import DashboardTimeline from './DashboardTimeline';
-import NewPathWizard from '../paths/NewPathWizard';
+import NewPathForm from '../paths/forms/NewPathForm';
 
 function Dahboard() {
   const content = (
@@ -11,7 +11,7 @@ function Dahboard() {
       <Routes>
         <Route path="/" element={<DashboardTimeline />} />
         <Route path="/my-paths" element={<MyPaths />} />
-        <Route path="/new-path" element={<NewPathWizard />} />
+        <Route path="/new-path" element={<NewPathForm />} />
       </Routes>
     </div>
   );
