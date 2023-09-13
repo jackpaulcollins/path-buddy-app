@@ -97,7 +97,7 @@ function Login() {
     }
   };
 
-  const handleTimeZoneInput = (tz) => setTimeZone(tz);
+  const handleTimeZoneInput = (_label, tz) => setTimeZone(tz);
 
   const handleEmailInput = (e) => setEmail(e.target.value);
 
@@ -235,7 +235,7 @@ function Login() {
                 disabled={isLoading}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
+                Sign up
               </button>
             </div>
           </form>
