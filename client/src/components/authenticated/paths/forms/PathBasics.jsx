@@ -22,7 +22,6 @@ function PathBasics({ formData, setFormData }) {
 
   return (
     <div className="w-2/3 m-auto mt-4 space-y-12">
-      {JSON.stringify(formData)}
       <div className="pb-12">
         <h2 className="text-base font-semibold leading-7 text-gray-900">Path Basics</h2>
         <p className="mt-1 text-sm leading-6 text-gray-600">

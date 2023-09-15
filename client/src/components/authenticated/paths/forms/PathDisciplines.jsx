@@ -13,14 +13,13 @@ function PathDisciplines({ formData, setFormData }) {
   const formObject = {
     index: new Date().getTime(),
     disciplineName: '',
-    disciplineCardinality: '',
+    disciplineCardinality: 'positive',
     disciplineSchedule: '',
   };
 
   const [pathDisciplineUnits, setPathDisciplineUnits] = useState([formObject]);
 
   useEffect(() => {
-    console.log(formData.pathDisciplines);
     setFormData({
       ...formData,
       pathDisciplines: pathDisciplineUnits,
@@ -56,7 +55,6 @@ function PathDisciplines({ formData, setFormData }) {
 
   return (
     <div className="flex flex-col items-start w-1/2 m-auto pb-2">
-      {JSON.stringify(formData)}
       {pathDisciplineUnits.map((unit) => (
         <PathDisciplineUnit
           key={unit.index}
