@@ -1,13 +1,8 @@
 const systemTimeZones = [
-  'Pacific Time (US & Canada)',
-  'Mountain Time (US & Canada)',
-  'Central Time (US & Canada)',
-  'Eastern Time (US & Canada)',
-  'UTC',
-  'London',
-  'Berlin',
-  'Tokyo',
-  'Sydney',
+  { label: 'Pacific Time (US & Canada)', value: 'Pacific Time (US & Canada)' },
+  { label: 'Mountain Time (US & Canada)', value: 'Mountain Time (US & Canada)' },
+  { label: 'Central Time (US & Canada)', value: 'Central Time (US & Canada)' },
+  { label: 'Eastern Time (US & Canada)', value: 'Eastern Time (US & Canada)' },
 ];
 
 export default systemTimeZones;

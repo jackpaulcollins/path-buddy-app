@@ -9,14 +9,12 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 function Dropdown({
-  dropdownOptions, selectorFunc, currentSelection, placeHolder,
+  dropdownOptions, selectorFunc, currentSelection, placeHolder, label,
 }) {
   const classNames = (...classes) => classes.filter(Boolean).join(' ');
 
-  const handleTimeZoneInput = (tz) => selectorFunc(tz);
-
   return (
-    <Menu as="div" className="relative inline-block w-full mt-2 text-left">
+    <Menu as="div" className="relative inline-block w-full text-left">
       <div>
         <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
           { currentSelection || placeHolder}
@@ -36,16 +34,16 @@ function Dropdown({
         <Menu.Items className="absolute right-0 z-10 w-56 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             { dropdownOptions.map((option) => (
-              <Menu.Item key={option}>
+              <Menu.Item key={option.label}>
                 {() => (
                   <div
-                    onClick={() => handleTimeZoneInput(option)}
+                    onClick={() => selectorFunc(label, option.value)}
                     className={classNames(
                       option === currentSelection ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-4 py-2 text-sm hover:bg-gray-50',
                     )}
                   >
-                    {option}
+                    {option.label}
                   </div>
                 )}
               </Menu.Item>
