@@ -18,7 +18,9 @@ function PathDisciplines({ formData, setFormData }) {
     disciplineSchedule: '',
   };
 
-  const [pathDisciplineUnits, setPathDisciplineUnits] = useState(formData.pathDisciplines);
+  const disciplinesSet = !!formData.pathDisciplines.length;
+
+  const [pathDisciplineUnits, setPathDisciplineUnits] = disciplinesSet ? useState(formData.pathDisciplines) : useState([formObject]);
 
   useEffect(() => {
     setFormData({
