@@ -45,8 +45,8 @@ function PathDisciplineUnit({
 
   return (
     <div className="mt-4 w-full flex flex-row align-center justify-evenly">
-      <div className="w-1/6 inline-flex">
-        <FontAwesomeIcon className="self-center mr-6" icon={faI} />
+      <div className="w-1/4 inline-flex">
+        <FontAwesomeIcon className="self-center mr-4" icon={faI} size="sm" />
         <Dropdown
           key={idx}
           label="disciplineCardinality"
@@ -64,10 +64,10 @@ function PathDisciplineUnit({
           value={disciplineName}
           name="disciplineName"
           onChange={(e) => onChange(e, idx)}
-          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          className="min-w-[300px] block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
         />
       </div>
-      <div>
+      <div className="min-w-[120px]">
         <Dropdown
           key={idx}
           label="disciplineSchedule"
@@ -77,7 +77,7 @@ function PathDisciplineUnit({
           selectorFunc={(label, option) => handleDropDownSelect(label, option)}
         />
       </div>
-      <div className="self-end hover:cursor-pointer">
+      <div className="hover:cursor-pointer self-center">
         <FontAwesomeIcon onClick={() => onRemove(idx)} icon={faTrash} />
       </div>
     </div>
