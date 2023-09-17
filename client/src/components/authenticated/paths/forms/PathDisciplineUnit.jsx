@@ -25,7 +25,6 @@ function PathDisciplineUnit({
   useEffect(() => {
     if (customScheduleSet) {
       const scheduleParts = disciplineSchedule.split('=')[1];
-      console.log(scheduleParts);
       const customDays = scheduleParts.split(',').map(Number);
       setCustomDaysState(customDays);
     }
@@ -73,7 +72,6 @@ function PathDisciplineUnit({
   const optionLabelFromValue = (options, value) => {
     // eslint-disable-next-line no-restricted-syntax
     for (const obj of options) {
-      console.log(options)
       const key = Object.values(obj)[0];
       const val = Object.values(obj)[1];
       if (val === value) {
