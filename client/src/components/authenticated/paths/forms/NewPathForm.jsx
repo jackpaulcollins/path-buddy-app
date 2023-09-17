@@ -35,7 +35,7 @@ function NewPathForm() {
       onClick={delegateButtonAction}
       className="rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
-      { isLastStep() ? 'submit' : 'next'}
+      { isLastStep() ? 'save' : 'next'}
     </button>
   );
 
@@ -44,9 +44,9 @@ function NewPathForm() {
       type="button"
       disabled={isFirstStep()}
       onClick={() => setStep((currStep) => currStep - 1)}
-      className="rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      className="disabled:opacity-50 rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
-      prev
+      back
     </button>
   );
 
