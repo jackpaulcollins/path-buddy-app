@@ -19,7 +19,7 @@ function NewPathForm() {
   const isFirstStep = () => (step === 0);
 
   const handleSubmit = () => {
-    console.log('submitted');
+    console.log(formData);
   };
 
   const incrementStep = () => {

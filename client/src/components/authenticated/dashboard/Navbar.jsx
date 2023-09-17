@@ -54,10 +54,10 @@ function Navbar() {
                       Dashboard
                     </Link>
                     <Link
-                      to="my-paths"
-                      className={activeLink('my-paths') ? 'bg-gray-900 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
+                      to="my-path"
+                      className={activeLink('my-path') ? 'bg-gray-900 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white'}
                     >
-                      My Paths
+                      My Path
                     </Link>
                     <Link
                       to="new-path"
