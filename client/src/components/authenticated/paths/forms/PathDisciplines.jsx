@@ -13,9 +13,9 @@ function PathDisciplines({ formData, setFormData }) {
 
   const formObject = {
     index: new Date().getTime(),
-    disciplineName: '',
-    disciplineCardinality: 'positive',
-    disciplineSchedule: '',
+    discipline_name: '',
+    discipline_cardinality: 'positive',
+    discipline_schedule: '',
   };
 
   const disciplinesSet = !!formData.pathDisciplines.length;
@@ -63,9 +63,9 @@ function PathDisciplines({ formData, setFormData }) {
         <PathDisciplineUnit
           key={unit.index}
           idx={unit.index}
-          disciplineName={unit.disciplineName}
-          disciplineCardinality={unit.disciplineCardinality}
-          disciplineSchedule={unit.disciplineSchedule}
+          discipline_name={unit.discipline_name}
+          discipline_cardinality={unit.discipline_cardinality}
+          discipline_schedule={unit.discipline_schedule}
           onRemove={handleRemoveUnit}
           onChange={handleUnitChange}
         />

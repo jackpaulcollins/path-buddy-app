@@ -43,11 +43,11 @@ function PathReview({ formData }) {
       <li key={d.index}>
         I
         {' '}
-        <strong>{d.disciplineCardinality === 'positive' ? 'will' : 'will not'}</strong>
+        <strong>{d.discipline_cardinality === 'positive' ? 'will' : 'will not'}</strong>
         {' '}
-        {d.disciplineName}
+        {d.discipline_name}
         {' '}
-        {d.disciplineSchedule}
+        {d.discipline_schedule}
       </li>
     ))
   );

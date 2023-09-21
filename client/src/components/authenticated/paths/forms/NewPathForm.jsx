@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import StepDelegator from './StepDelegator';
+import { useCreatePathMutation } from '../../../../features/paths/pathApiSlice';
 
 function NewPathForm() {
+  const [createPath] = useCreatePathMutation();
+
   const formObject = {
     pathName: '',
     pathWhy: '',
@@ -18,8 +21,20 @@ function NewPathForm() {
 
   const isFirstStep = () => (step === 0);
 
-  const handleSubmit = () => {
-    console.log(formData);
+  const handleSubmit = async () => {
+    const {
+      pathName, pathWhy, pathStartDate, pathEndDate, pathDisciplines,
+    } = formData;
+    const data = await createPath({
+      path: {
+        path_name: pathName,
+        path_description: pathWhy,
+        path_start_date: pathStartDate,
+        path_end_date: pathEndDate,
+        path_disciplines: pathDisciplines,
+      },
+    });
+    console.log(data);
   };
 
   const incrementStep = () => {
