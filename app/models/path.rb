@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Path < ApplicationRecord
   belongs_to :user
 
@@ -21,9 +23,9 @@ class Path < ApplicationRecord
   end
 
   def unique_active_path_per_user
-    if active? && user_active_path_present?
-      errors.add(:state, "You can have only one active path at a time")
-    end
+    return unless active? && user_active_path_present?
+
+    errors.add(:state, 'You can have only one active path at a time')
   end
 
   def user_active_path_present?

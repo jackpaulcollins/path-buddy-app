@@ -4,6 +4,7 @@ module Paths
   class PathCreateOp < BaseOp
     string :path_name
     string :path_description
+    integer :current_user_id
     date :path_start_date
     date :path_end_date
     array :path_disciplines
@@ -22,7 +23,7 @@ module Paths
         path.why = path_description
         path.start_date = path_start_date
         path.end_date = path_end_date
-        path.user = User.last
+        path.user_id = current_user_id
       end
     end
   end
