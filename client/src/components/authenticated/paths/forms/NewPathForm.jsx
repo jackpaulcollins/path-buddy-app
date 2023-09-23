@@ -84,9 +84,7 @@ function NewPathForm() {
     </div>
   );
 
-  if (formData !== undefined) {
-    return content;
-  }
+  return content;
 }
 
 export default NewPathForm;
