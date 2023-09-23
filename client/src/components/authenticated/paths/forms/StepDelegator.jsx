@@ -10,12 +10,14 @@ function StepDelegator({ step, formData, setFormData }) {
     setFormData: PropTypes.func.isRequired,
   };
 
-  if (step === 0) {
-    return <PathBasics formData={formData} setFormData={setFormData} />;
-  } if (step === 1) {
-    return <PathUnits formData={formData} setFormData={setFormData} />;
+  if (formData !== undefined) {
+    if (step === 0) {
+      return <PathBasics formData={formData} setFormData={setFormData} />;
+    } if (step === 1) {
+      return <PathUnits formData={formData} setFormData={setFormData} />;
+    }
+    return <PathReview formData={formData} setFormData={setFormData} />;
   }
-  return <PathReview formData={formData} setFormData={setFormData} />;
 }
 
 export default StepDelegator;

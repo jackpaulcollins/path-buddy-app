@@ -1,7 +1,7 @@
 function CurrentUserPath() {
   return (
     <div>
-      Current user path
+      curr user path
     </div>
   );
 }

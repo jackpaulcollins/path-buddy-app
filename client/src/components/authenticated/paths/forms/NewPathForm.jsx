@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import StepDelegator from './StepDelegator';
 import { useCreatePathMutation } from '../../../../features/paths/pathApiSlice';
 
 function NewPathForm() {
   const [createPath] = useCreatePathMutation();
+  const navigate = useNavigate();
 
   const formObject = {
     pathName: '',
@@ -25,16 +27,21 @@ function NewPathForm() {
     const {
       pathName, pathWhy, pathStartDate, pathEndDate, pathUnits,
     } = formData;
-    const data = await createPath({
-      path: {
-        path_name: pathName,
-        path_description: pathWhy,
-        path_start_date: pathStartDate,
-        path_end_date: pathEndDate,
-        path_units: pathUnits,
-      },
-    });
-    console.log(data);
+
+    try {
+      await createPath({
+        path: {
+          path_name: pathName,
+          path_description: pathWhy,
+          path_start_date: pathStartDate,
+          path_end_date: pathEndDate,
+          path_units: pathUnits,
+        },
+      });
+      navigate('/dashboard/my-path');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const incrementStep = () => {
@@ -65,7 +72,7 @@ function NewPathForm() {
     </button>
   );
 
-  return (
+  const content = (
     <div className="min-h-[400px] max-w-[700px] p-4 mt-12 space-y-4 shadow-md rounded-md bg-white mx-auto border-solid border-2 border-gray-100 mb-8 flex flex-col justify-between">
       <div>
         <StepDelegator step={step} formData={formData} setFormData={setFormData} />
@@ -76,6 +83,10 @@ function NewPathForm() {
       </div>
     </div>
   );
+
+  if (formData !== undefined) {
+    return content;
+  }
 }
 
 export default NewPathForm;
