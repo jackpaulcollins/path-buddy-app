@@ -43,11 +43,11 @@ function PathReview({ formData }) {
       <li key={d.index}>
         I
         {' '}
-        <strong>{d.unit_polarity === 'positive' ? 'will' : 'will not'}</strong>
+        <strong>{d.polarity === 'positive' ? 'will' : 'will not'}</strong>
         {' '}
-        {d.unit_name}
+        {d.name}
         {' '}
-        {d.unit_schedule}
+        {d.schedule}
       </li>
     ))
   );

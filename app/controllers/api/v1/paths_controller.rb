@@ -3,10 +3,11 @@
 module Api
   module V1
     class PathsController < ApplicationController
+      before_action :set_current_user, only: %i[create]
+
       def create
-        current_user = validate_user!
-        path = ::Paths::PathCreateOp.submit!(path_params.merge(current_user_id: current_user.id)).path
-        render json: { path: }, status: :ok
+        path = ::Paths::PathCreateOp.submit!(path_params.merge(current_user_id: @current_user.id)).path
+        render json: PathSerializer.new(path).serializable_hash[:data][:attributes], status: :ok
       end
 
       def updated
@@ -18,6 +19,10 @@ module Api
       end
 
       private
+
+      def set_current_user
+        @current_user = validate_user!
+      end
 
       # rubocop:disable Metrics/MethodLength
       def path_params
