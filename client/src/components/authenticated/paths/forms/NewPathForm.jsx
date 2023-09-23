@@ -10,11 +10,11 @@ function NewPathForm() {
     pathWhy: '',
     pathStartDate: '',
     pathEndDate: null,
-    pathDisciplines: {},
+    pathUnits: {},
   };
 
   const [step, setStep] = useState(0);
-  const steps = ['Basics', 'Disciples', 'Review'];
+  const steps = ['Basics', 'Units', 'Review'];
   const [formData, setFormData] = useState(formObject);
 
   const isLastStep = () => (step === steps.length - 1);
@@ -23,7 +23,7 @@ function NewPathForm() {
 
   const handleSubmit = async () => {
     const {
-      pathName, pathWhy, pathStartDate, pathEndDate, pathDisciplines,
+      pathName, pathWhy, pathStartDate, pathEndDate, pathUnits,
     } = formData;
     const data = await createPath({
       path: {
@@ -31,7 +31,7 @@ function NewPathForm() {
         path_description: pathWhy,
         path_start_date: pathStartDate,
         path_end_date: pathEndDate,
-        path_disciplines: pathDisciplines,
+        path_units: pathUnits,
       },
     });
     console.log(data);

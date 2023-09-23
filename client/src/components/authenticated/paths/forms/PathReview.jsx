@@ -6,7 +6,7 @@ function PathReview({ formData }) {
   };
 
   const {
-    pathName, pathStartDate, pathEndDate, pathDisciplines,
+    pathName, pathStartDate, pathEndDate, pathUnits,
   } = formData;
 
   const renderPathNameAndWhy = () => (
@@ -38,16 +38,16 @@ function PathReview({ formData }) {
     </div>
   );
 
-  const renderDisciplines = () => (
-    pathDisciplines.map((d) => (
+  const renderUnits = () => (
+    pathUnits.map((d) => (
       <li key={d.index}>
         I
         {' '}
-        <strong>{d.discipline_cardinality === 'positive' ? 'will' : 'will not'}</strong>
+        <strong>{d.unit_polarity === 'positive' ? 'will' : 'will not'}</strong>
         {' '}
-        {d.discipline_name}
+        {d.unit_name}
         {' '}
-        {d.discipline_schedule}
+        {d.unit_schedule}
       </li>
     ))
   );
@@ -63,7 +63,7 @@ function PathReview({ formData }) {
           {renderBasics()}
         </div>
         <ul className="list-disc ml-8 mt-2">
-          {renderDisciplines()}
+          {renderUnits()}
         </ul>
       </div>
     </div>

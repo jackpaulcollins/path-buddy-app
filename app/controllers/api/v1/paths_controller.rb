@@ -26,11 +26,11 @@ module Api
           :path_description,
           :path_start_date,
           :path_end_date,
-          :path_disciplines => %i[
+          :path_units => %i[
             index
-            discipline_name
-            discipline_cardinality
-            discipline_schedule
+            name
+            polarity
+            schedule
           ]
         )
       end

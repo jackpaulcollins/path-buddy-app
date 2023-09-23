@@ -7,24 +7,30 @@ module Paths
     integer :current_user_id
     date :path_start_date
     date :path_end_date
-    array :path_disciplines
+    array :path_units
     outputs :path
 
     protected
 
     def perform
-      path = create_path!
+      path = create_path
+      create_path_units(path)
+      path.save!
       output :path, path
     end
 
-    def create_path!
-      Path.create! do |path|
-        path.name = path_name
-        path.why = path_description
-        path.start_date = path_start_date
-        path.end_date = path_end_date
-        path.user_id = current_user_id
-      end
+    def create_path
+      Path.new(
+        name: path_name,
+        why: path_description,
+        start_date: path_start_date,
+        end_date: path_end_date,
+        user_id: current_user_id
+      )
+    end
+
+    def create_path_units(path)
+      path_units.each { |d| path.path_units.build(d.except(:index)) }
     end
   end
 end

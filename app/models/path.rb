@@ -2,6 +2,7 @@
 
 class Path < ApplicationRecord
   belongs_to :user
+  has_many :path_units, dependent: :destroy
 
   validates :name, presence: true
   validates :state, presence: true
