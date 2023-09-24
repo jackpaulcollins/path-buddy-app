@@ -6,8 +6,15 @@ module Api
       before_action :set_current_user, only: %i[create]
 
       def create
-        path = ::Paths::PathCreateOp.submit!(path_params.merge(current_user_id: @current_user.id)).path
-        render json: PathSerializer.new(path).serializable_hash[:data][:attributes], status: :ok
+        op = ::Paths::PathCreateOp.submit(path_params.merge(current_user_id: @current_user.id))
+
+        if op.path.present?
+          path = op.path
+          render json: { path: PathSerializer.new(path).serializable_hash[:data][:attributes] }, status: :created
+        else
+          errors = op.errors
+          render json: { errors: errors.full_messages }, status: :unprocessable_entity
+        end
       end
 
       def updated

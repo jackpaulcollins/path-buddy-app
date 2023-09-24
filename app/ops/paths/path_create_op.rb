@@ -10,6 +10,10 @@ module Paths
     array :path_units
     outputs :path
 
+    validates :path_name, presence: true
+    validates :path_start_date, presence: true
+    validates :path_units, presence: true
+
     protected
 
     def perform

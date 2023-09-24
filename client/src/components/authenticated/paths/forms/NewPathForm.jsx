@@ -5,6 +5,7 @@ import { useCreatePathMutation } from '../../../../features/paths/pathApiSlice';
 
 function NewPathForm() {
   const [createPath] = useCreatePathMutation();
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const formObject = {
@@ -29,7 +30,7 @@ function NewPathForm() {
     } = formData;
 
     try {
-      await createPath({
+      const response = await createPath({
         path: {
           path_name: pathName,
           path_description: pathWhy,
@@ -37,10 +38,15 @@ function NewPathForm() {
           path_end_date: pathEndDate,
           path_units: pathUnits,
         },
-      });
-      navigate('/dashboard/my-path');
+      }).unwrap();
+
+      const { status, data } = response;
+
+      if (status === 201) {
+        navigate('/dashboard/my-path', { state: { data } });
+      }
     } catch (e) {
-      console.log(e);
+      setErrorMessage(e.data.data.errors);
     }
   };
 
@@ -74,6 +80,7 @@ function NewPathForm() {
 
   const content = (
     <div className="min-h-[400px] max-w-[700px] p-4 mt-12 space-y-4 shadow-md rounded-md bg-white mx-auto border-solid border-2 border-gray-100 mb-8 flex flex-col justify-between">
+      {errorMessage}
       <div>
         <StepDelegator step={step} formData={formData} setFormData={setFormData} />
       </div>

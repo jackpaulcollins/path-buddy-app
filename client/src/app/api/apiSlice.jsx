@@ -17,8 +17,8 @@ const baseQuery = fetchBaseQuery({
       'content-type': response.headers.get('content-type'),
       authorization: response.headers.get('authorization'),
     };
-
-    return { data, headers };
+    const { status } = response;
+    return { status, data, headers };
   },
 });
 

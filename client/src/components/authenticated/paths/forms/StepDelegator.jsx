@@ -10,7 +10,7 @@ function StepDelegator({ step, formData, setFormData }) {
     setFormData: PropTypes.func.isRequired,
   };
 
-  if (formData !== undefined) {
+  if (formData) {
     if (step === 0) {
       return <PathBasics formData={formData} setFormData={setFormData} />;
     } if (step === 1) {

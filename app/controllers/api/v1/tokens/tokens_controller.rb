@@ -8,7 +8,7 @@ module Api
           user = ::Tokens::JwtTokenExchangeOp.submit!(token: token_params).user
 
           if user.present?
-            render json: { verified: true, user: user }, status: :ok
+            render json: { verified: true, status: 200 }
           else
             render json: { verified: false }, status: :forbidden
           end
