@@ -1,12 +1,22 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import Datepicker from 'react-tailwindcss-datepicker';
 import PropTypes from 'prop-types';
+import { string, date, object } from 'yup';
 
 function PathBasics({ formData, setFormData }) {
   PathBasics.propTypes = {
     formData: PropTypes.shape.isRequired,
     setFormData: PropTypes.func.isRequired,
   };
+
+  const basicsSchema = object({
+    pathName: string().required(),
+    pathWhy: string(),
+    pathEndDate: date(),
+    pathStartDate: date().required(),
+  });
+
+  basicsSchema.validate(formData);
 
   const {
     pathStartDate, pathEndDate, pathName, pathWhy,
