@@ -6,44 +6,44 @@ import PropTypes from 'prop-types';
 import Dropdown from '../../../general/Dropdown';
 import SelectField from '../../../general/SelectField';
 
-function PathDisciplineUnit({
-  disciplineCardinality, disciplineSchedule, disciplineName, onRemove, onChange, idx,
+function PathUnit({
+  polarity, schedule, name, onRemove, onChange, idx,
 }) {
-  PathDisciplineUnit.propTypes = {
-    disciplineCardinality: PropTypes.string.isRequired,
-    disciplineSchedule: PropTypes.string.isRequired,
-    disciplineName: PropTypes.string.isRequired,
+  PathUnit.propTypes = {
+    polarity: PropTypes.string.isRequired,
+    schedule: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     onRemove: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     idx: PropTypes.number.isRequired,
   };
 
-  const customScheduleSet = !!disciplineSchedule.startsWith('custom=');
+  const customScheduleSet = !!schedule.startsWith('custom=');
 
   const [customDaysState, setCustomDaysState] = useState([0, 0, 0, 0, 0, 0, 0]);
   
   useEffect(() => {
     if (customScheduleSet) {
-      const scheduleParts = disciplineSchedule.split('=')[1];
+      const scheduleParts = schedule.split('=')[1];
       const customDays = scheduleParts.split(',').map(Number);
       setCustomDaysState(customDays);
     }
   }, []);
 
   useEffect(() => {
-    if (disciplineSchedule.startsWith('custom=')) {
-      const event = { target: { name: 'disciplineSchedule', value: `custom=${customDaysState}` } };
+    if (schedule.startsWith('custom=')) {
+      const event = { target: { name: 'schedule', value: `custom=${customDaysState}` } };
       onChange(event, idx);
     }
   }, [customDaysState]);
 
   useEffect(() => {
-    if (!disciplineSchedule.startsWith('custom=')) {
+    if (!schedule.startsWith('custom=')) {
       setCustomDaysState([0, 0, 0, 0, 0, 0, 0])
     }
-  }, [disciplineSchedule]);
+  }, [schedule]);
 
-  const cardinalityOptions = [
+  const polarityOptions = [
     { label: 'will', value: 'positive' },
     { label: 'will not', value: 'negative' },
   ];
@@ -94,7 +94,7 @@ function PathDisciplineUnit({
   };
 
   const maybeRenderCustomSchedule = () => {
-    if (disciplineSchedule.startsWith('custom=')) {
+    if (schedule.startsWith('custom=')) {
       return (
         <div className="mt-2 w-full">
           <SelectField options={customScheduleOptions} currentSelections={customDaysState} selectorFunc={handleCustomScheduleDaySelect} flexDirection="row" />
@@ -111,10 +111,10 @@ function PathDisciplineUnit({
           <FontAwesomeIcon className="self-center mr-4" icon={faI} size="sm" />
           <Dropdown
             key={idx}
-            label="disciplineCardinality"
+            label="polarity"
             placeHolder="will"
-            dropdownOptions={cardinalityOptions}
-            currentSelection={optionLabelFromValue(cardinalityOptions, disciplineCardinality)}
+            dropdownOptions={polarityOptions}
+            currentSelection={optionLabelFromValue(polarityOptions, polarity)}
             selectorFunc={(label, option) => handleDropDownSelect(label, option)}
           />
         </div>
@@ -123,8 +123,8 @@ function PathDisciplineUnit({
             key={idx}
             type="text"
             placeholder="commitment"
-            value={disciplineName}
-            name="disciplineName"
+            value={name}
+            name="name"
             onChange={(e) => onChange(e, idx)}
             className="min-w-[300px] block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
@@ -132,10 +132,10 @@ function PathDisciplineUnit({
         <div className="min-w-[120px]">
           <Dropdown
             key={idx}
-            label="disciplineSchedule"
+            label="schedule"
             placeHolder="schedule"
             dropdownOptions={scheduleOptions}
-            currentSelection={disciplineSchedule.startsWith('custom=') ? 'custom' : disciplineSchedule}
+            currentSelection={schedule.startsWith('custom=') ? 'custom' : schedule}
             selectorFunc={(label, option) => handleDropDownSelect(label, option)}
           />
         </div>
@@ -150,4 +150,4 @@ function PathDisciplineUnit({
   );
 }
 
-export default PathDisciplineUnit;
+export default PathUnit;

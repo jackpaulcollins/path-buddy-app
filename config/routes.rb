@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
       post 'tokens/verify', to: 'tokens/tokens#verify'
       post 'tokens/token', to: 'tokens/tokens#refresh'
+
+      resources :paths, except: [:index]
     end
   end
 end

@@ -5,12 +5,12 @@ module Api
     module Tokens
       class TokensController < ApplicationController
         def verify
-          verified = ::Tokens::VerifyJwtTokenOp.submit!(token: token_params).verification_status
+          user = ::Tokens::JwtTokenExchangeOp.submit!(token: token_params).user
 
-          if verified
-            render json: { verified: }, status: :ok
+          if user.present?
+            render json: { verified: true, status: 200 }
           else
-            render json: { verified: }, status: :forbidden
+            render json: { verified: false }, status: :forbidden
           end
         end
 

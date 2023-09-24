@@ -52,3 +52,4 @@ gem 'dotenv-rails'
 gem 'subroutine', git: 'https://github.com/guideline-tech/subroutine.git', branch: 'main'
 
 gem "fast_jsonapi", "~> 1.5"
+gem 'state_machines-activerecord'

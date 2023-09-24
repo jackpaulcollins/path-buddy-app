@@ -1,25 +1,53 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import StepDelegator from './StepDelegator';
+import { useCreatePathMutation } from '../../../../features/paths/pathApiSlice';
 
 function NewPathForm() {
+  const [createPath] = useCreatePathMutation();
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+
   const formObject = {
     pathName: '',
     pathWhy: '',
     pathStartDate: '',
     pathEndDate: null,
-    pathDisciplines: {},
+    pathUnits: {},
   };
 
   const [step, setStep] = useState(0);
-  const steps = ['Basics', 'Disciples', 'Review'];
+  const steps = ['Basics', 'Units', 'Review'];
   const [formData, setFormData] = useState(formObject);
 
   const isLastStep = () => (step === steps.length - 1);
 
   const isFirstStep = () => (step === 0);
 
-  const handleSubmit = () => {
-    console.log(formData);
+  const handleSubmit = async () => {
+    const {
+      pathName, pathWhy, pathStartDate, pathEndDate, pathUnits,
+    } = formData;
+
+    try {
+      const response = await createPath({
+        path: {
+          path_name: pathName,
+          path_description: pathWhy,
+          path_start_date: pathStartDate,
+          path_end_date: pathEndDate,
+          path_units: pathUnits,
+        },
+      }).unwrap();
+
+      const { status, data } = response;
+
+      if (status === 201) {
+        navigate('/dashboard/my-path', { state: { data } });
+      }
+    } catch (e) {
+      setErrorMessage(e.data.data.errors);
+    }
   };
 
   const incrementStep = () => {
@@ -50,8 +78,9 @@ function NewPathForm() {
     </button>
   );
 
-  return (
+  const content = (
     <div className="min-h-[400px] max-w-[700px] p-4 mt-12 space-y-4 shadow-md rounded-md bg-white mx-auto border-solid border-2 border-gray-100 mb-8 flex flex-col justify-between">
+      {errorMessage}
       <div>
         <StepDelegator step={step} formData={formData} setFormData={setFormData} />
       </div>
@@ -61,6 +90,8 @@ function NewPathForm() {
       </div>
     </div>
   );
+
+  return content;
 }
 
 export default NewPathForm;

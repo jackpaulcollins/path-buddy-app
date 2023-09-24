@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import PathBasics from './PathBasics';
-import PathDisciplines from './PathDisciplines';
+import PathUnits from './PathUnits';
 import PathReview from './PathReview';
 
 function StepDelegator({ step, formData, setFormData }) {
@@ -10,12 +10,14 @@ function StepDelegator({ step, formData, setFormData }) {
     setFormData: PropTypes.func.isRequired,
   };
 
-  if (step === 0) {
-    return <PathBasics formData={formData} setFormData={setFormData} />;
-  } if (step === 1) {
-    return <PathDisciplines formData={formData} setFormData={setFormData} />;
+  if (formData) {
+    if (step === 0) {
+      return <PathBasics formData={formData} setFormData={setFormData} />;
+    } if (step === 1) {
+      return <PathUnits formData={formData} setFormData={setFormData} />;
+    }
+    return <PathReview formData={formData} setFormData={setFormData} />;
   }
-  return <PathReview formData={formData} setFormData={setFormData} />;
 }
 
 export default StepDelegator;

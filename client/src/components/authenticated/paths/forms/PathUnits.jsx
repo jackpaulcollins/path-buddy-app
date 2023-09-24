@@ -3,34 +3,34 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import PathDisciplineUnit from './PathDisciplineUnit';
+import PathUnit from './PathUnit';
 
-function PathDisciplines({ formData, setFormData }) {
-  PathDisciplines.propTypes = {
+function PathUnits({ formData, setFormData }) {
+  PathUnits.propTypes = {
     formData: PropTypes.shape.isRequired,
     setFormData: PropTypes.func.isRequired,
   };
 
   const formObject = {
     index: new Date().getTime(),
-    disciplineName: '',
-    disciplineCardinality: 'positive',
-    disciplineSchedule: '',
+    name: '',
+    polarity: 'positive',
+    schedule: '',
   };
 
-  const disciplinesSet = !!formData.pathDisciplines.length;
+  const unitsSet = !!formData.pathUnits.length;
 
-  const [pathDisciplineUnits, setPathDisciplineUnits] = disciplinesSet ? useState(formData.pathDisciplines) : useState([formObject]);
+  const [pathUnits, setPathUnits] = unitsSet ? useState(formData.pathUnits) : useState([formObject]);
 
   useEffect(() => {
     setFormData({
       ...formData,
-      pathDisciplines: pathDisciplineUnits,
+      pathUnits,
     });
-  }, [pathDisciplineUnits]);
+  }, [pathUnits]);
 
-  const handleAddPathDisciplineUnit = () => {
-    setPathDisciplineUnits((prevUnits) => [
+  const handleAddPathunitUnit = () => {
+    setPathUnits((prevUnits) => [
       ...prevUnits,
       formObject,
     ]);
@@ -38,7 +38,7 @@ function PathDisciplines({ formData, setFormData }) {
 
   const handleUnitChange = (e, idx) => {
     const { name, value } = e.target;
-    setPathDisciplineUnits((prevUnits) => {
+    setPathUnits((prevUnits) => {
       const targetIndex = prevUnits.findIndex((item) => item.index === idx);
       if (targetIndex === -1) {
         return prevUnits;
@@ -50,7 +50,7 @@ function PathDisciplines({ formData, setFormData }) {
   };
 
   const handleRemoveUnit = (idx) => {
-    setPathDisciplineUnits((prevUnits) => {
+    setPathUnits((prevUnits) => {
       const updatedUnits = prevUnits.filter((item) => item.index !== idx);
       return updatedUnits;
     });
@@ -59,22 +59,22 @@ function PathDisciplines({ formData, setFormData }) {
   return (
     <div className="flex flex-col items-start w-full m-auto pb-2">
       <h2 className="text-base font-semibold leading-7 text-gray-900">Path Commitments</h2>
-      {pathDisciplineUnits.map((unit) => (
-        <PathDisciplineUnit
+      {pathUnits.map((unit) => (
+        <PathUnit
           key={unit.index}
           idx={unit.index}
-          disciplineName={unit.disciplineName}
-          disciplineCardinality={unit.disciplineCardinality}
-          disciplineSchedule={unit.disciplineSchedule}
+          name={unit.name}
+          polarity={unit.polarity}
+          schedule={unit.schedule}
           onRemove={handleRemoveUnit}
           onChange={handleUnitChange}
         />
       ))}
-      <div role="button" tabIndex={0} onKeyDown={handleAddPathDisciplineUnit} onClick={handleAddPathDisciplineUnit}>
+      <div role="button" tabIndex={0} onKeyDown={handleAddPathunitUnit} onClick={handleAddPathunitUnit}>
         <FontAwesomeIcon className="hover:cursor-pointer mt-4" icon={faPlusCircle} />
       </div>
     </div>
   );
 }
 
-export default PathDisciplines;
+export default PathUnits;
