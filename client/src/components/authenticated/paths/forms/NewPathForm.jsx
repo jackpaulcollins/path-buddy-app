@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { newPathFormHighlighter, newPathFormSchema } from '../../../../yup/NewPathForm';
 import StepDelegator from './StepDelegator';
+import ErrorAlert from '../../../general/ErrorAlert';
 import { useCreatePathMutation } from '../../../../features/paths/pathApiSlice';
 
 function NewPathForm() {
   const [createPath] = useCreatePathMutation();
-  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const formObject = {
@@ -13,16 +14,25 @@ function NewPathForm() {
     pathWhy: '',
     pathStartDate: '',
     pathEndDate: null,
-    pathUnits: {},
+    pathUnits: [],
   };
 
   const [step, setStep] = useState(0);
   const steps = ['Basics', 'Units', 'Review'];
   const [formData, setFormData] = useState(formObject);
+  const [formErrors, setFormErrors] = useState('');
 
   const isLastStep = () => (step === steps.length - 1);
 
   const isFirstStep = () => (step === 0);
+
+  const goToStep = async (stepInt) => {
+    setStep(stepInt);
+  };
+
+  const hightLightFieldOnError = (field) => {
+    newPathFormHighlighter('add', field);
+  };
 
   const handleSubmit = async () => {
     const {
@@ -46,11 +56,29 @@ function NewPathForm() {
         navigate('/dashboard/my-path', { state: { data } });
       }
     } catch (e) {
-      setErrorMessage(e.data.data.errors);
+      setFormErrors('Something went wrong, please contact support');
     }
   };
 
-  const incrementStep = () => {
+  const validateFormData = async () => {
+    try {
+      await newPathFormSchema.validate(formData);
+    } catch (e) {
+      const { errors, path } = e;
+      await goToStep(errors[0]);
+      setFormErrors(errors[1]);
+      hightLightFieldOnError(path);
+      return false;
+    }
+    return true;
+  };
+
+  const incrementStep = async () => {
+    if (step === 1) {
+      const valid = validateFormData();
+      if (!valid) return;
+    }
+    setFormErrors('');
     setStep((currStep) => currStep + 1);
   };
 
@@ -78,9 +106,15 @@ function NewPathForm() {
     </button>
   );
 
+  const clearErrors = () => setFormErrors('');
+
+  const renderFormErrors = (
+    <ErrorAlert clearErrors={clearErrors} messages={[formErrors]} />
+  );
+
   const content = (
     <div className="min-h-[400px] max-w-[700px] p-4 mt-12 space-y-4 shadow-md rounded-md bg-white mx-auto border-solid border-2 border-gray-100 mb-8 flex flex-col justify-between">
-      {errorMessage}
+      {formErrors ? renderFormErrors : null}
       <div>
         <StepDelegator step={step} formData={formData} setFormData={setFormData} />
       </div>

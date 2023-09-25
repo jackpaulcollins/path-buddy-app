@@ -59,11 +59,12 @@ function PathUnits({ formData, setFormData }) {
   return (
     <div className="flex flex-col items-start w-full m-auto pb-2">
       <h2 className="text-base font-semibold leading-7 text-gray-900">Path Commitments</h2>
-      {pathUnits.map((unit) => (
+      {pathUnits.map((unit, i) => (
         <PathUnit
           key={unit.index}
           idx={unit.index}
           name={unit.name}
+          errorFinder={i}
           polarity={unit.polarity}
           schedule={unit.schedule}
           onRemove={handleRemoveUnit}
