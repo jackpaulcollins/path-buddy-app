@@ -1,13 +1,13 @@
-/* eslint-disable */
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faI } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import Dropdown from '../../../general/Dropdown';
 import SelectField from '../../../general/SelectField';
+import { newPathFormHighlighter } from '../../../../yup/NewPathForm';
 
 function PathUnit({
-  polarity, schedule, name, onRemove, onChange, idx,
+  polarity, schedule, name, onRemove, onChange, idx, errorFinder,
 }) {
   PathUnit.propTypes = {
     polarity: PropTypes.string.isRequired,
@@ -16,12 +16,13 @@ function PathUnit({
     onRemove: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     idx: PropTypes.number.isRequired,
+    errorFinder: PropTypes.number.isRequired,
   };
 
   const customScheduleSet = !!schedule.startsWith('custom=');
 
   const [customDaysState, setCustomDaysState] = useState([0, 0, 0, 0, 0, 0, 0]);
-  
+
   useEffect(() => {
     if (customScheduleSet) {
       const scheduleParts = schedule.split('=')[1];
@@ -39,7 +40,7 @@ function PathUnit({
 
   useEffect(() => {
     if (!schedule.startsWith('custom=')) {
-      setCustomDaysState([0, 0, 0, 0, 0, 0, 0])
+      setCustomDaysState([0, 0, 0, 0, 0, 0, 0]);
     }
   }, [schedule]);
 
@@ -64,7 +65,12 @@ function PathUnit({
     { label: 'sat', value: 6 },
   ];
 
+  const maybeClearErrorClasses = (index, fieldName) => {
+    newPathFormHighlighter('remove', `pathUnits[${index}].${fieldName}`);
+  };
+
   const handleDropDownSelect = (label, option) => {
+    newPathFormHighlighter('remove', `pathUnits[${errorFinder}].${label}`);
     const event = { target: { name: label, value: option } };
     onChange(event, idx);
   };
@@ -105,7 +111,7 @@ function PathUnit({
   };
 
   return (
-    <div className="w-full">
+    <div id={`unit-${errorFinder}`} className="w-full">
       <div className="mt-4 w-full flex flex-row align-center justify-evenly">
         <div className="w-1/4 inline-flex">
           <FontAwesomeIcon className="self-center mr-4" icon={faI} size="sm" />
@@ -125,8 +131,12 @@ function PathUnit({
             placeholder="commitment"
             value={name}
             name="name"
-            onChange={(e) => onChange(e, idx)}
-            className="min-w-[300px] block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            id="name"
+            onChange={(e) => {
+              maybeClearErrorClasses(errorFinder, 'name');
+              onChange(e, idx);
+            }}
+            className="min-w-[300px] block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
         <div className="min-w-[120px]">
