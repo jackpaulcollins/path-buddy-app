@@ -12,12 +12,17 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
   responseHandler: async (response) => {
-    const data = await response?.json();
     const headers = {
       'content-type': response.headers.get('content-type'),
       authorization: response.headers.get('authorization'),
     };
     const { status } = response;
+
+    if (status === 204) {
+      return { status, data: null, headers };
+    }
+
+    const data = await response.json();
     return { status, data, headers };
   },
 });

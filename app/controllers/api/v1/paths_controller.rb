@@ -3,7 +3,7 @@
 module Api
   module V1
     class PathsController < ApplicationController
-      before_action :set_current_user, only: %i[create]
+      before_action :set_current_user, only: %i[create show]
 
       def create
         op = ::Paths::PathCreateOp.submit(path_params.merge(current_user_id: @current_user.id))
@@ -17,7 +17,21 @@ module Api
         end
       end
 
-      def updated
+      def show
+        op = ::Paths::PathFetchOp.submit(user_id: @current_user.id)
+
+        if op.path.present?
+          path = op.path
+          render json: { path: PathSerializer.new(path).serializable_hash[:data][:attributes] }, status: :ok
+        elsif op.path.nil? && op.errors.empty?
+          render json: {}, status: :no_content
+        else
+          errors = op.errors
+          render json: { errors: errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
+      def update
         # PathUpdateOp.submit!(path_params)
       end
 
