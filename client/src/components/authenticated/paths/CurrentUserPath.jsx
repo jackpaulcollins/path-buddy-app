@@ -7,6 +7,8 @@ import PathScheduleParser from '../../../utils/PathScheduleParser';
 import { useFetchPathMutation } from '../../../features/paths/pathApiSlice';
 import FullScreenLoading from '../../general/FullScreenLoading';
 import { setFlash } from '../../../features/notifications/notificationsSlice';
+import ThumbsDown from '../../../assets/icons/ThumbsDown';
+import ThumbsUp from '../../../assets/icons/ThumbsUp';
 
 function CurrentUserPath() {
   const location = useLocation();
@@ -39,13 +41,13 @@ function CurrentUserPath() {
 
   const parsedSchedule = (schedule) => {
     if (!schedule.startsWith('custom=')) {
-      return schedule;
+      return new PathScheduleParser(schedule).periodDisplay();
     }
 
     return new PathScheduleParser(schedule).parse();
   };
 
-  const parsePolarity = (polarity) => (polarity === 'positive' ? 'Do' : 'Avoid');
+  const parsePolarity = (polarity) => (polarity === 'positive' ? <ThumbsUp /> : <ThumbsDown />);
 
   const content = () => {
     if (path) {

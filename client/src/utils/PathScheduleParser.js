@@ -17,6 +17,18 @@ class PathScheduleParser {
 
     return result.join(', ');
   }
+
+  periodDisplay() {
+    if (this.scheduleString === 'weekly') {
+      return 'At least once a week';
+    }
+
+    if (this.scheduleString === 'daily') {
+      return 'At least once a day';
+    }
+
+    return this.scheduleString;
+  }
 }
 
 export default PathScheduleParser;
