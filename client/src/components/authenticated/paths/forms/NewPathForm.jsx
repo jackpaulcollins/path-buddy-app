@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { newPathFormHighlighter, newPathFormSchema } from '../../../../yup/NewPathForm';
 import StepDelegator from './StepDelegator';
 import ErrorAlert from '../../../general/ErrorAlert';
 import { useCreatePathMutation } from '../../../../features/paths/pathApiSlice';
+import { setFlash } from '../../../../features/notifications/notificationsSlice';
 
 function NewPathForm() {
   const [createPath] = useCreatePathMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const formObject = {
     pathName: '',
@@ -53,6 +56,7 @@ function NewPathForm() {
       const { status, data } = response;
 
       if (status === 201) {
+        dispatch(setFlash({ title: 'Success!', message: 'Your path was created', icon: 'success' }));
         navigate('/dashboard/my-path', { state: { data } });
       }
     } catch (e) {

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import PathScheduleParser from '../../../../utils/PathScheduleParser';
 
 function PathReview({ formData }) {
   PathReview.propTypes = {
@@ -8,6 +9,14 @@ function PathReview({ formData }) {
   const {
     pathName, pathStartDate, pathEndDate, pathUnits,
   } = formData;
+
+  const parsedSchedule = (schedule) => {
+    if (!schedule.startsWith('custom=')) {
+      return schedule;
+    }
+
+    return new PathScheduleParser(schedule).parse();
+  };
 
   const renderPathNameAndWhy = () => (
     <h1 className="text-center font-bold mb-4 border-b-2">{pathName}</h1>
@@ -47,7 +56,7 @@ function PathReview({ formData }) {
         {' '}
         {d.name}
         {' '}
-        {d.schedule}
+        {parsedSchedule(d.schedule)}
       </li>
     ))
   );

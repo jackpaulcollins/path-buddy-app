@@ -1,15 +1,17 @@
 /* eslint-disable camelcase */
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectCurrentUser } from '../../../features/auth/authSlice';
 import PathScheduleParser from '../../../utils/PathScheduleParser';
 import { useFetchPathMutation } from '../../../features/paths/pathApiSlice';
 import FullScreenLoading from '../../general/FullScreenLoading';
+import { setFlash } from '../../../features/notifications/notificationsSlice';
 
 function CurrentUserPath() {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const fromRouteData = location.state?.data;
   const user = useSelector(selectCurrentUser);
   const [fetchPath] = useFetchPathMutation();
@@ -24,6 +26,7 @@ function CurrentUserPath() {
         if (response.status === 200) {
           setPath(response.data.path);
         } else if (response.status === 204) {
+          dispatch(setFlash({ title: 'Information', message: "You haven't created a path yet!", icon: 'info' }));
           navigate('/dashboard/new-path');
         }
       };
@@ -47,7 +50,7 @@ function CurrentUserPath() {
   const content = () => {
     if (path) {
       return (
-        <div className="overflow-hidden bg-white shadow sm:rounded-lg">
+        <div className="overflow-hidden w-2/3 m-auto bg-white shadow sm:rounded-lg">
           <div className="px-4 py-6 sm:px-6">
             <h3 className="text-base font-semibold leading-7 text-gray-900">{path.name}</h3>
             <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">{path.why}</p>

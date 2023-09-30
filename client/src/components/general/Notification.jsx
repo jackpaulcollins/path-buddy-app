@@ -1,11 +1,34 @@
-/* eslint-disable max-len */
+/* eslint-disable */
 import { Fragment, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { clearFlash } from '../../features/notifications/notificationsSlice';
 import { Transition } from '@headlessui/react';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { InformationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon } from '@heroicons/react/20/solid';
+import { XCircleIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon } from '@heroicons/react/24/outline'
 
-export default function Notificaton() {
+export default function Notificaton({ message, icon, title }) {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(true);
+
+  const dismiss = () => {
+    dispatch(clearFlash());
+    setShow(false);
+  }
+
+  const renderIcon = () => {
+    switch (icon) {
+      case 'info':
+        return <InformationCircleIcon className="h-5 w-5 text-blue-400" aria-hidden="true" />;
+      case 'error':
+        return <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />;
+      case 'success':
+        return <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true" />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <>
@@ -30,18 +53,18 @@ export default function Notificaton() {
               <div className="p-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
-                    <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />
+                    {renderIcon()}
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className="text-sm font-medium text-gray-900">Successfully saved!</p>
-                    <p className="mt-1 text-sm text-gray-500">Anyone with a link can now view this file.</p>
+                  <p className="text-sm font-medium text-gray-900">{title}</p>
+                    <p className="mt-1 text-sm text-gray-500">{message}</p>
                   </div>
                   <div className="ml-4 flex flex-shrink-0">
                     <button
                       type="button"
                       className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       onClick={() => {
-                        setShow(false);
+                        dismiss()
                       }}
                     >
                       <span className="sr-only">Close</span>
