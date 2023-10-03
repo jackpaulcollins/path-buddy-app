@@ -2,4 +2,5 @@
 
 class PathUnit < ApplicationRecord
   belongs_to :path
+  has_many :path_unit_reports
 end
