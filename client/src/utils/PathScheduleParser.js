@@ -1,6 +1,7 @@
 class PathScheduleParser {
-  constructor(scheduleString) {
+  constructor(scheduleString, schedulePolarity) {
     this.scheduleString = scheduleString;
+    this.schedulePolarity = schedulePolarity;
   }
 
   parse() {
@@ -20,11 +21,12 @@ class PathScheduleParser {
 
   periodDisplay() {
     if (this.scheduleString === 'weekly') {
-      return 'At least once a week';
+      return this.schedulePolarity === 'positive' ? 'At least once a week' : 'Weekly';
     }
 
     if (this.scheduleString === 'daily') {
-      return 'At least once a day';
+      console.log(this.schedulePolarity);
+      return this.schedulePolarity === 'positive' ? 'At least once a day' : 'Everyday';
     }
 
     return this.scheduleString;
