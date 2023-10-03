@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       post 'tokens/token', to: 'tokens/tokens#refresh'
 
       resources :paths
+      resources :path_unit_reports
     end
   end
 end
