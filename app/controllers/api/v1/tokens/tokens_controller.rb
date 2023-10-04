@@ -5,9 +5,9 @@ module Api
     module Tokens
       class TokensController < ApplicationController
         def verify
-          user = ::Tokens::JwtTokenExchangeOp.submit!(token: token_params).user
+          op = ::Tokens::JwtTokenExchangeOp.submit!(token: token_params)
 
-          if user.present?
+          if op.user.present?
             render json: { verified: true, status: 200 }
           else
             render json: { verified: false }, status: :forbidden

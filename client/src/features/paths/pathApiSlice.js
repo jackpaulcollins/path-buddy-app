@@ -9,9 +9,16 @@ export const pathApiSlice = apiSlice.injectEndpoints({
         body: path,
       }),
     }),
+    fetchPath: builder.mutation({
+      query: (currentUserId) => ({
+        url: `/api/v1/paths/${currentUserId}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
 export const {
   useCreatePathMutation,
+  useFetchPathMutation,
 } = pathApiSlice;
