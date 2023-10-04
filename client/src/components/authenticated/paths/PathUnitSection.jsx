@@ -10,7 +10,12 @@ import { useCreatePathUnitReportMutation } from '../../../features/path_unit_rep
 
 function PathUnitSection({ unit, date }) {
   PathUnitSection.propTypes = {
-    unit: PropTypes.shape.isRequired,
+    unit: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      schedule: PropTypes.string.isRequired,
+      polarity: PropTypes.string.isRequired
+    }),
     date: PropTypes.string.isRequired
   };
 

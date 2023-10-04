@@ -6,7 +6,12 @@ import PathStreakSection from './PathStreakSection';
 
 function CurrentUserPathDescriptionSection({ date, details }) {
   CurrentUserPathDescriptionSection.propTypes = {
-    details: PropTypes.shape.isRequired,
+    details: PropTypes.shape({
+      name: PropTypes.string,
+      why: PropTypes.string,
+      startDate: PropTypes.string,
+      endDate: PropTypes.string,
+    }),
     date: PropTypes.string.isRequired,
   };
 
