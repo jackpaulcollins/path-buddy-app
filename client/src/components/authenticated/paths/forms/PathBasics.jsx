@@ -5,8 +5,14 @@ import { newPathFormHighlighter } from '../../../../yup/NewPathForm';
 
 function PathBasics({ formData, setFormData }) {
   PathBasics.propTypes = {
-    formData: PropTypes.shape.isRequired,
     setFormData: PropTypes.func.isRequired,
+    formData: PropTypes.shape({
+      pathName: PropTypes.string,
+      pathWhy: PropTypes.string,
+      pathStartDate: PropTypes.string,
+      pathEndDate: PropTypes.string,
+      pathUnits: PropTypes.array,
+    }),
   };
 
   const {

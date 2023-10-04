@@ -6,8 +6,14 @@ import PathReview from './PathReview';
 function StepDelegator({ step, formData, setFormData }) {
   StepDelegator.propTypes = {
     step: PropTypes.number.isRequired,
-    formData: PropTypes.shape.isRequired,
     setFormData: PropTypes.func.isRequired,
+    formData: PropTypes.shape({
+      pathName: PropTypes.string,
+      pathWhy: PropTypes.string,
+      pathStartDate: PropTypes.string,
+      pathEndDate: PropTypes.string,
+      pathUnits: PropTypes.array,
+    }),
   };
 
   if (formData) {

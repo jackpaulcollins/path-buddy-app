@@ -3,7 +3,13 @@ import PathScheduleParser from '../../../../utils/PathScheduleParser';
 
 function PathReview({ formData }) {
   PathReview.propTypes = {
-    formData: PropTypes.shape.isRequired,
+    formData: PropTypes.shape({
+      pathName: PropTypes.string,
+      pathWhy: PropTypes.string,
+      pathStartDate: PropTypes.string,
+      pathEndDate: PropTypes.string,
+      pathUnits: PropTypes.array,
+    }),
   };
 
   const {

@@ -7,8 +7,14 @@ import PathUnit from './PathUnit';
 
 function PathUnits({ formData, setFormData }) {
   PathUnits.propTypes = {
-    formData: PropTypes.shape.isRequired,
     setFormData: PropTypes.func.isRequired,
+    formData: PropTypes.shape({
+      pathName: PropTypes.string,
+      pathWhy: PropTypes.string,
+      pathStartDate: PropTypes.string,
+      pathEndDate: PropTypes.string,
+      pathUnits: PropTypes.array,
+    }),
   };
 
   const formObject = {
