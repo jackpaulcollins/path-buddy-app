@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
+import localforage from 'localforage';
 import apiSlice from './api/apiSlice';
 import authReducer from '../features/auth/authSlice';
 import notificationReducer from '../features/notifications/notificationsSlice';
@@ -13,7 +13,7 @@ const reducers = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: localforage,
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
