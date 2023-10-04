@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { toDate, format } from 'date-fns';
 import { selectCurrentUser } from '../../../features/auth/authSlice';
 import { useFetchPathMutation } from '../../../features/paths/pathApiSlice';
 import FullScreenLoading from '../../general/FullScreenLoading';
@@ -18,6 +19,8 @@ function CurrentUserPath() {
   const [fetchPath] = useFetchPathMutation();
 
   const [path, setPath] = useState(null);
+
+  const date = format(toDate(new Date(), { timeZone: 'Your_Time_Zone' }), 'MMMM d, yyyy');
 
   useEffect(() => {
     if (!fromRouteData) {
@@ -42,14 +45,16 @@ function CurrentUserPath() {
     if (path) {
       return (
         <div className="mt-6 overflow-hidden w-2/3 m-auto bg-white shadow sm:rounded-lg">
-          <CurrentUserPathDescriptionSection details={{
-            name: path.name, why: path.why, startDate: path.start_date, endDate: path.end_date,
-          }}
+          <CurrentUserPathDescriptionSection
+            date={date}
+            details={{
+              name: path.name, why: path.why, startDate: path.start_date, endDate: path.end_date,
+            }}
           />
           <div className="border-t border-gray-100">
             <dl className="divide-y divide-gray-100">
               { path && path.path_units.map((unit) => (
-                <PathUnitSection key={unit.name} unit={unit} />
+                <PathUnitSection key={unit.name} unit={unit} date={date} />
               ))}
             </dl>
           </div>

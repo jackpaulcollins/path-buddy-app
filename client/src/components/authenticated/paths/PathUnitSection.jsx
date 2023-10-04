@@ -6,13 +6,27 @@ import CircleX from '../../../assets/icons/CircleX';
 import ThumbsUp from '../../../assets/icons/ThumbsUp';
 import ThumbsDown from '../../../assets/icons/ThumbsDown';
 import PathScheduleParser from '../../../utils/PathScheduleParser';
+import { useCreatePathUnitReportMutation } from '../../../features/path_unit_reports/pathUnitReportApiSlice';
 
-function PathUnitSection({ unit }) {
+function PathUnitSection({ unit, date }) {
   PathUnitSection.propTypes = {
     unit: PropTypes.shape.isRequired,
+    date: PropTypes.string.isRequired
   };
 
-  const { name, schedule, polarity } = unit;
+  const [ createReport ] = useCreatePathUnitReportMutation();
+
+  const { id, name, schedule, polarity } = unit;
+
+  const createNewReport = async(status) => {
+    const report = await createReport({ 
+                          path_unit_report: {
+                            path_unit_id: id,
+                            date: date,
+                            status: status
+                           }});
+    console.log(report)
+  }
 
   const parsedSchedule = (unitSchedule, unitPolarity) => {
     if (!unitSchedule.startsWith('custom=')) {
@@ -26,11 +40,22 @@ function PathUnitSection({ unit }) {
 
   const renderPathActionSection = () => (
     <div className="w-1/2 inline-flex justify-evenly">
-      <div className="hover:cursor-pointer" onClick={() => alert('are you sure you want to mark this completed?')}>
+      <div 
+        className="hover:cursor-pointer"
+        onClick={() => {
+          alert('are you sure you want to mark this completed?')
+          createNewReport('pass')
+        }}
+        >
         <ThumbsUp extraClasses={maybeMarkSelected()} />
       </div>
-      <div className="hover:cursor-pointer" onClick={() => alert('are you sure you want to mark this failed?')}>
-        <ThumbsDown extraClasses={maybeMarkSelected()} />
+      <div 
+        className="hover:cursor-pointer" 
+        onClick={() => {
+          alert('are you sure you want to mark this failed?')
+          createNewReport('fail')
+        }}>
+        <ThumbsDown extraClasses={maybeMarkSelected()} onClick={() => createNewReport('faile')}/>
       </div>
     </div>
   );
