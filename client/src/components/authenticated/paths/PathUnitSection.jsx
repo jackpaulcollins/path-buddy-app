@@ -1,5 +1,5 @@
-/* eslint-disable  */
-/* eslint-disable no-alert */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types';
 import CircleCheck from '../../../assets/icons/CircleCheck';
 import CircleX from '../../../assets/icons/CircleX';
@@ -14,24 +14,27 @@ function PathUnitSection({ unit, date }) {
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
       schedule: PropTypes.string.isRequired,
-      polarity: PropTypes.string.isRequired
+      polarity: PropTypes.string.isRequired,
     }),
-    date: PropTypes.string.isRequired
+    date: PropTypes.string.isRequired,
   };
 
-  const [ createReport ] = useCreatePathUnitReportMutation();
+  const [createReport] = useCreatePathUnitReportMutation();
 
-  const { id, name, schedule, polarity } = unit;
+  const {
+    id, name, schedule, polarity,
+  } = unit;
 
-  const createNewReport = async(status) => {
-    const report = await createReport({ 
-                          path_unit_report: {
-                            path_unit_id: id,
-                            date: date,
-                            status: status
-                           }});
-    console.log(report)
-  }
+  const createNewReport = async (status) => {
+    const report = await createReport({
+      path_unit_report: {
+        path_unit_id: id,
+        date,
+        status,
+      },
+    });
+    console.log(report);
+  };
 
   const parsedSchedule = (unitSchedule, unitPolarity) => {
     if (!unitSchedule.startsWith('custom=')) {
@@ -45,22 +48,23 @@ function PathUnitSection({ unit, date }) {
 
   const renderPathActionSection = () => (
     <div className="w-1/2 inline-flex justify-evenly">
-      <div 
+      <div
         className="hover:cursor-pointer"
         onClick={() => {
-          alert('are you sure you want to mark this completed?')
-          createNewReport('pass')
+          alert('are you sure you want to mark this completed?');
+          createNewReport('pass');
         }}
-        >
+      >
         <ThumbsUp extraClasses={maybeMarkSelected()} />
       </div>
-      <div 
-        className="hover:cursor-pointer" 
+      <div
+        className="hover:cursor-pointer"
         onClick={() => {
-          alert('are you sure you want to mark this failed?')
-          createNewReport('fail')
-        }}>
-        <ThumbsDown extraClasses={maybeMarkSelected()} onClick={() => createNewReport('faile')}/>
+          alert('are you sure you want to mark this failed?');
+          createNewReport('fail');
+        }}
+      >
+        <ThumbsDown extraClasses={maybeMarkSelected()} onClick={() => createNewReport('faile')} />
       </div>
     </div>
   );
