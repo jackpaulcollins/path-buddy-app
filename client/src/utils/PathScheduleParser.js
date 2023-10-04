@@ -25,7 +25,6 @@ class PathScheduleParser {
     }
 
     if (this.scheduleString === 'daily') {
-      console.log(this.schedulePolarity);
       return this.schedulePolarity === 'positive' ? 'At least once a day' : 'Everyday';
     }
 

@@ -1,13 +1,13 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
 import PropTypes from 'prop-types';
 import TextBubble from '../../../assets/icons/TextBubble';
 import CurrentDayStats from './CurrentDayStats';
 import PathStreakSection from './PathStreakSection';
 
-function CurrentUserPathDescriptionSection({ details }) {
+function CurrentUserPathDescriptionSection({ date, details }) {
   CurrentUserPathDescriptionSection.propTypes = {
     details: PropTypes.shape.isRequired,
+    date: PropTypes.string.isRequired,
   };
 
   const {
@@ -45,7 +45,7 @@ function CurrentUserPathDescriptionSection({ details }) {
         </div>
       </dl>
       <div className="w-1/3">
-        <CurrentDayStats />
+        <CurrentDayStats date={date} />
       </div>
       <div className="w-1/8">
         <PathStreakSection />

@@ -36,4 +36,8 @@ class Path < ApplicationRecord
   def in_active_range?
     start_date <= Date.today && (end_date.nil? || end_date >= Date.today)
   end
+
+  def valid_for_date?(date)
+    path_units.all? { |pu| pu.path_unit_reports.where(date: date).present? }
+  end
 end
