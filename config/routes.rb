@@ -12,7 +12,8 @@ Rails.application.routes.draw do
       post 'tokens/token', to: 'tokens/tokens#refresh'
 
       resources :paths
-      resources :path_unit_reports
+      get 'path_unit_reports', to: 'path_unit_reports#fetch_by_day'
+      post 'path_unit_reports', to: 'path_unit_reports#create_or_toggle'
     end
   end
 end

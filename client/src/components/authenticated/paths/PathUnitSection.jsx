@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CircleCheck from '../../../assets/icons/CircleCheck';
 import CircleX from '../../../assets/icons/CircleX';
 import ThumbsUp from '../../../assets/icons/ThumbsUp';
 import ThumbsDown from '../../../assets/icons/ThumbsDown';
 import PathScheduleParser from '../../../utils/PathScheduleParser';
-import { useCreatePathUnitReportMutation } from '../../../features/path_unit_reports/pathUnitReportApiSlice';
+import { useCreatePathUnitReportMutation, useGetPathUnitReportMutation } from '../../../features/path_unit_reports/pathUnitReportApiSlice';
+import ComponentLoading from '../../general/ComponentLoading';
 
 function PathUnitSection({ unit, date }) {
   PathUnitSection.propTypes = {
@@ -20,20 +22,46 @@ function PathUnitSection({ unit, date }) {
   };
 
   const [createReport] = useCreatePathUnitReportMutation();
+  const [getReport] = useGetPathUnitReportMutation();
+  const [reportState, setReportState] = useState();
+  const [loading, setLoading] = useState(true);
 
   const {
     id, name, schedule, polarity,
   } = unit;
 
+  const fetchReport = async () => {
+    setLoading(true);
+    try {
+      const response = await getReport({
+        id,
+        date,
+      }).unwrap();
+      const { report } = response.data;
+      setReportState(report?.status);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+
+    fetchReport();
+    setLoading(false);
+  }, []);
+
   const createNewReport = async (status) => {
-    const report = await createReport({
+    await createReport({
       path_unit_report: {
         path_unit_id: id,
         date,
         status,
       },
     });
-    console.log(report);
+    fetchReport();
   };
 
   const parsedSchedule = (unitSchedule, unitPolarity) => {
@@ -44,7 +72,7 @@ function PathUnitSection({ unit, date }) {
     return new PathScheduleParser(schedule, polarity).parse();
   };
 
-  const maybeMarkSelected = () => '#7173f5';
+  const maybeMarkSelected = (passOrFail) => (passOrFail === reportState ? '#7173f5' : 'none');
 
   const renderPathActionSection = () => (
     <div className="w-1/2 inline-flex justify-evenly">
@@ -55,7 +83,7 @@ function PathUnitSection({ unit, date }) {
           createNewReport('pass');
         }}
       >
-        <ThumbsUp extraClasses={maybeMarkSelected()} />
+        <ThumbsUp extraClasses={maybeMarkSelected('pass')} />
       </div>
       <div
         className="hover:cursor-pointer"
@@ -64,12 +92,20 @@ function PathUnitSection({ unit, date }) {
           createNewReport('fail');
         }}
       >
-        <ThumbsDown extraClasses={maybeMarkSelected()} onClick={() => createNewReport('faile')} />
+        <ThumbsDown extraClasses={maybeMarkSelected('fail')} />
       </div>
     </div>
   );
 
   const parsePolarity = (unitPolarity) => (unitPolarity === 'positive' ? <CircleCheck extraClasses="text-green-600" /> : <CircleX extraClasses="text-red-600" />);
+
+  if (loading) {
+    return (
+      <div className="h-full p-2 flex justify-center w-full">
+        <ComponentLoading />
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-48 sm:px-6">

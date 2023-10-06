@@ -3,8 +3,9 @@
 require 'subroutine/association_fields'
 
 module PathUnitReports
-  class CreateOp < BaseOp
+  class ToggleOp < BaseOp
     include ::Subroutine::AssociationFields
+    extend Memoist
 
     association :path_unit
     date :date
@@ -12,16 +13,31 @@ module PathUnitReports
 
     validates :path_unit_id, presence: true
     validates :date, presence: true
-    validates :status, presence: true, inclusion: { in: PathUnitReport::STATUSES }
+    validates :status, presence: true
 
     outputs :report
 
     protected
 
     def perform
+      # handles event in which user has clicked the same polarity twice, allowing them to 'delete' the report
+      if existing_report.present?
+        destroy_existing_report
+        return output :report, nil
+      end
+
       maybe_destroy_opposite_report
-      report = maybe_create_report
+      report = create_report
       output :report, report
+    end
+
+    def existing_report
+      path_unit.path_unit_reports.find_by(date: date, status: status)
+    end
+    memoize :existing_report
+
+    def destroy_existing_report
+      existing_report.destroy!
     end
 
     def maybe_destroy_opposite_report
@@ -37,8 +53,9 @@ module PathUnitReports
       status == 'pass' ? 'fail' : 'pass'
     end
 
-    def maybe_create_report
-      path_unit.path_unit_reports.find_or_create_by!(date: date, status: status)
+    def create_report
+      pu = path_unit.path_unit_reports.new(date: date, status: status)
+      pu.save!
     end
   end
 end

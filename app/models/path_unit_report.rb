@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class PathUnitReport < ApplicationRecord
-  STATUSES = %w[pass fail].freeze
+  enum :status, %w[unanswered pass fail], default: 'unanswered'
   belongs_to :path_unit
 
-  validates :status, presence: true, inclusion: { in: STATUSES }
+  validates :status, presence: true
   validates_uniqueness_of :date, scope: :path_unit_id
 end

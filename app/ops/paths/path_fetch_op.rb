@@ -13,7 +13,7 @@ module Paths
     protected
 
     def perform
-      path = Path.includes(:path_units).find_by(user: user)
+      path = Path.includes(path_units: :path_unit_reports).find_by(user: user)
       output :path, path
     end
   end

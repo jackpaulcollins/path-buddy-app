@@ -39,6 +39,7 @@ gem "rack-cors"
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem 'pry-byebug'
 end
 
 group :development do
@@ -53,3 +54,4 @@ gem 'subroutine', git: 'https://github.com/guideline-tech/subroutine.git', branc
 
 gem "fast_jsonapi", "~> 1.5"
 gem 'state_machines-activerecord'
+gem 'memoist'

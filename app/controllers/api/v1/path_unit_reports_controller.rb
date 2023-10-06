@@ -3,16 +3,22 @@
 module Api
   module V1
     class PathUnitReportsController < ApplicationController
-      def create
-        op = PathUnitReports::CreateOp.submit!(path_unit_report_params.to_h)
+      def create_or_toggle
+        op = PathUnitReports::ToggleOp.submit(path_unit_report_params.to_h)
 
         if op.report.present?
-          report = op.report
-          render json: { report: report }, status: :created
+          render json: { report: op.report }, status: :created
+        elsif op.errors.present?
+          render json: { errors: op.errors.full_messages }, status: :unprocessable_entity
         else
-          errors = op.errors
-          render json: { errors: errors.full_messages }, status: :unprocessable_entity
+          head :no_content
         end
+      end
+
+      def fetch_by_day
+        report = PathUnitReports::FetchOp.submit!(path_unit_id: params['id'], date: params['date']).report
+
+        render json: { report: report }, status: :ok
       end
 
       private
