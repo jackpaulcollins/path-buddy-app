@@ -7,6 +7,7 @@ import { selectCurrentUser } from '../../../features/auth/authSlice';
 import { useFetchPathMutation } from '../../../features/paths/pathApiSlice';
 import FullScreenLoading from '../../general/FullScreenLoading';
 import { setFlash } from '../../../features/notifications/notificationsSlice';
+import { setDate } from '../../../features/paths/pathStatsSlice';
 import CurrentUserPathDescriptionSection from './CurrentUserPathDescriptionSection';
 import PathUnitSection from './PathUnitSection';
 
@@ -20,9 +21,11 @@ function CurrentUserPath() {
 
   const [path, setPath] = useState(null);
 
-  const date = format(toDate(new Date(), { timeZone: 'Your_Time_Zone' }), 'MMMM d, yyyy');
+  const date = format(toDate(new Date(), { timeZone: user.timeZone }), 'MMMM d, yyyy');
 
   useEffect(() => {
+    dispatch(setDate({ date }));
+
     if (!fromRouteData) {
       const getCurrentUserPath = async () => {
         const response = await fetchPath(user.id).unwrap();
@@ -54,7 +57,7 @@ function CurrentUserPath() {
           <div className="border-t border-gray-100">
             <dl className="divide-y divide-gray-100">
               { path && path.path_units.map((unit) => (
-                <PathUnitSection key={unit.name} unit={unit} date={date} />
+                <PathUnitSection key={unit.name} unit={unit} />
               ))}
             </dl>
           </div>

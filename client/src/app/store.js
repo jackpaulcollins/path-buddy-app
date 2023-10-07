@@ -4,11 +4,13 @@ import localforage from 'localforage';
 import apiSlice from './api/apiSlice';
 import authReducer from '../features/auth/authSlice';
 import notificationReducer from '../features/notifications/notificationsSlice';
+import pathStatsReducer from '../features/paths/pathStatsSlice';
 
 const reducers = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   auth: authReducer,
   notifications: notificationReducer,
+  pathStats: pathStatsReducer,
 });
 
 const persistConfig = {

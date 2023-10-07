@@ -2,9 +2,5 @@
 
 class UserSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :email, :first_name, :last_name, :created_at
-
-  attribute :created_date do |user|
-    user.created_at&.strftime('%d/%m/%Y')
-  end
+  attributes :id, :email, :first_name, :last_name, :time_zone
 end
