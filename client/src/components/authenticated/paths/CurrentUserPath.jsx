@@ -15,7 +15,6 @@ import { setFlash } from '../../../features/notifications/notificationsSlice';
 import { setDate } from '../../../features/paths/pathStatsSlice';
 import CurrentUserPathDescriptionSection from './CurrentUserPathDescriptionSection';
 import PathUnitSection from './PathUnitSection';
-import Check from '../../../assets/icons/Check';
 import LeftCarrot from '../../../assets/icons/LeftCarrot';
 import RightCarrot from '../../../assets/icons/RightCarrot';
 
@@ -36,7 +35,7 @@ function CurrentUserPath() {
     // eslint-disable-next-line max-len
     const offSetDate = dateOffest >= 0 ? addDays(currentDate, dateOffest) : subDays(currentDate, (dateOffest * -1));
 
-    return format(toDate(offSetDate, { timeZone: user.timeZone }), 'MMMM d, yyyy');
+    return format(toDate(offSetDate, { timeZone: user.time_zone }), 'MMMM d, yyyy');
   };
 
   useEffect(() => {
@@ -71,8 +70,9 @@ function CurrentUserPath() {
         <div className="mt-6 overflow-hidden w-2/3 m-auto bg-white shadow sm:rounded-lg">
           <div className="inline-flex w-full justify-evenly">
             <div onClick={() => handleDateChange(-1)}><LeftCarrot /></div>
-            <Check extraClasses="text-green-600 text-l" />
-            <h1 className="font-semibold">{calculateDateFromOffest()}</h1>
+            <div className="inline-flex">
+              <h1 className="font-semibold">{calculateDateFromOffest()}</h1>
+            </div>
             <div onClick={() => handleDateChange(1)}><RightCarrot /></div>
           </div>
           <CurrentUserPathDescriptionSection
