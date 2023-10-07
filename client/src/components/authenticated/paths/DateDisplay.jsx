@@ -3,8 +3,8 @@ import Check from '../../../assets/icons/Check';
 import LeftCarrot from '../../../assets/icons/LeftCarrot';
 import RightCarrot from '../../../assets/icons/RightCarrot';
 
-function CurrentDayStats({ date }) {
-  CurrentDayStats.propTypes = {
+function DateDisplay({ date }) {
+  DateDisplay.propTypes = {
     date: PropTypes.string.isRequired,
   };
   return (
@@ -17,4 +17,4 @@ function CurrentDayStats({ date }) {
   );
 }
 
-export default CurrentDayStats;
+export default DateDisplay;

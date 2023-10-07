@@ -1,7 +1,7 @@
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
 import PropTypes from 'prop-types';
 import TextBubble from '../../../assets/icons/TextBubble';
-import CurrentDayStats from './CurrentDayStats';
+import DateDisplay from './DateDisplay';
 import PathStreakSection from './PathStreakSection';
 
 function CurrentUserPathDescriptionSection({ date, details }) {
@@ -50,7 +50,7 @@ function CurrentUserPathDescriptionSection({ date, details }) {
         </div>
       </dl>
       <div className="w-1/3">
-        <CurrentDayStats date={date} />
+        <DateDisplay date={date} />
       </div>
       <div className="w-1/8">
         <PathStreakSection />
