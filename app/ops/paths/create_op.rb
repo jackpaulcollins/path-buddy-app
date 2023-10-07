@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Paths
-  class PathCreateOp < BaseOp
+  class CreateOp < BaseOp
     string :path_name
     string :path_description
     integer :current_user_id

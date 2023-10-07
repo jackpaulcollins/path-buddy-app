@@ -9,14 +9,14 @@ import {
   toDate, format, addDays, subDays,
 } from 'date-fns';
 import { selectCurrentUser } from '../../../features/auth/authSlice';
-import { useFetchPathMutation } from '../../../features/paths/pathApiSlice';
-import FullScreenLoading from '../../general/FullScreenLoading';
+import { useFetchPathMutation, useValidOnDateMutation } from '../../../features/paths/pathApiSlice';
 import { setFlash } from '../../../features/notifications/notificationsSlice';
 import { setDate } from '../../../features/paths/pathStatsSlice';
 import CurrentUserPathDescriptionSection from './CurrentUserPathDescriptionSection';
 import PathUnitSection from './PathUnitSection';
 import LeftCarrot from '../../../assets/icons/LeftCarrot';
 import RightCarrot from '../../../assets/icons/RightCarrot';
+import ComponentLoading from '../../general/ComponentLoading';
 
 function CurrentUserPath() {
   const location = useLocation();
@@ -25,7 +25,8 @@ function CurrentUserPath() {
   const fromRouteData = location.state?.data;
   const user = useSelector(selectCurrentUser);
   const [fetchPath] = useFetchPathMutation();
-
+  const [fetchValidity] = useValidOnDateMutation();
+  const [loading, setLoading] = useState(null);
   const [path, setPath] = useState(null);
   const [dateOffest, setDateOffset] = useState(0);
 
@@ -39,25 +40,38 @@ function CurrentUserPath() {
   };
 
   useEffect(() => {
+    setLoading(true);
     const date = calculateDateFromOffest();
     dispatch(setDate({ date }));
 
     if (!fromRouteData) {
       const getCurrentUserPath = async () => {
-        const response = await fetchPath(user.id).unwrap();
+        if (user) {
+          const response = await fetchPath(user.id).unwrap();
 
-        if (response.status === 200) {
-          setPath(response.data.path);
-        } else if (response.status === 204) {
-          dispatch(setFlash({ title: 'Information', message: "You haven't created a path yet!", icon: 'info' }));
-          navigate('/dashboard/new-path');
+          if (response.status === 200) {
+            setPath(response.data.path);
+          } else if (response.status === 204) {
+            dispatch(setFlash({ title: 'Information', message: "You haven't created a path yet!", icon: 'info' }));
+            navigate('/dashboard/new-path');
+          }
         }
       };
 
-      getCurrentUserPath();
+      const getCurrentDateValidity = async (pathId) => {
+        const valid = await fetchValidity({ id: pathId, date });
+        console.log(valid);
+      };
+
+      getCurrentUserPath().then(() => {
+        getCurrentDateValidity(path.id, date);
+      });
     } else {
       setPath(fromRouteData.path);
+      getCurrentDateValidity();
     }
+
+    setLoading(false);
   }, [dateOffest]);
 
   const handleDateChange = (change) => {
@@ -65,7 +79,7 @@ function CurrentUserPath() {
   };
 
   const content = () => {
-    if (path) {
+    if (path && !loading) {
       return (
         <div className="mt-6 overflow-hidden w-2/3 m-auto bg-white shadow sm:rounded-lg">
           <div className="inline-flex w-full justify-evenly">
@@ -91,7 +105,7 @@ function CurrentUserPath() {
       );
     }
 
-    return <FullScreenLoading />;
+    return <ComponentLoading />;
   };
 
   return content();

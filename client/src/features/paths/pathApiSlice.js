@@ -15,10 +15,17 @@ export const pathApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    validOnDate: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/valid_on_date?id=${data.id}&date=${data.date}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
 export const {
   useCreatePathMutation,
   useFetchPathMutation,
+  useValidOnDateMutation,
 } = pathApiSlice;

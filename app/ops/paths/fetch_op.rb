@@ -3,7 +3,7 @@
 require 'subroutine/association_fields'
 
 module Paths
-  class PathFetchOp < BaseOp
+  class FetchOp < BaseOp
     include ::Subroutine::AssociationFields
 
     association :user
