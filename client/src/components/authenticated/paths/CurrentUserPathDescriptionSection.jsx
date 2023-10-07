@@ -1,10 +1,9 @@
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
 import PropTypes from 'prop-types';
 import TextBubble from '../../../assets/icons/TextBubble';
-import DateDisplay from './DateDisplay';
 import PathStreakSection from './PathStreakSection';
 
-function CurrentUserPathDescriptionSection({ date, details }) {
+function CurrentUserPathDescriptionSection({ details }) {
   CurrentUserPathDescriptionSection.propTypes = {
     details: PropTypes.shape({
       name: PropTypes.string,
@@ -12,7 +11,6 @@ function CurrentUserPathDescriptionSection({ date, details }) {
       startDate: PropTypes.string,
       endDate: PropTypes.string,
     }),
-    date: PropTypes.string.isRequired,
   };
 
   const {
@@ -49,9 +47,6 @@ function CurrentUserPathDescriptionSection({ date, details }) {
           <dd className="text-sm leading-6 text-gray-500">{why}</dd>
         </div>
       </dl>
-      <div className="w-1/3">
-        <DateDisplay date={date} />
-      </div>
       <div className="w-1/8">
         <PathStreakSection />
       </div>

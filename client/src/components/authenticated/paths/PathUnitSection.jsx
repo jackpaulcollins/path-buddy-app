@@ -53,7 +53,7 @@ function PathUnitSection({ unit }) {
 
     fetchReport();
     setLoading(false);
-  }, []);
+  }, [date]);
 
   const createNewReport = async (status) => {
     await createReport({
