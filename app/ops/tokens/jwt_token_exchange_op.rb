@@ -11,7 +11,7 @@ module Tokens
     def perform
       parsed_token = attempt_to_parse_token(token)
 
-      return unless parsed_token.is_a?(Array)
+      errors.add(:base, 'Token invalid') unless parsed_token.is_a?(Array)
 
       claims = parsed_token.first
       user = find_user(claims['data'])
