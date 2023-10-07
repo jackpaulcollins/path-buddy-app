@@ -12,7 +12,7 @@ import PathScheduleParser from '../../../utils/PathScheduleParser';
 import { useCreatePathUnitReportMutation, useGetPathUnitReportMutation } from '../../../features/path_unit_reports/pathUnitReportApiSlice';
 import ComponentLoading from '../../general/ComponentLoading';
 
-function PathUnitSection({ unit }) {
+function PathUnitSection({ unit, reFetchPath }) {
   PathUnitSection.propTypes = {
     unit: PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -20,6 +20,7 @@ function PathUnitSection({ unit }) {
       schedule: PropTypes.string.isRequired,
       polarity: PropTypes.string.isRequired,
     }),
+    reFetchPath: PropTypes.func.isRequired,
   };
 
   const [createReport] = useCreatePathUnitReportMutation();
@@ -64,6 +65,7 @@ function PathUnitSection({ unit }) {
       },
     });
     fetchReport();
+    reFetchPath();
   };
 
   const parsedSchedule = (unitSchedule, unitPolarity) => {
@@ -81,7 +83,6 @@ function PathUnitSection({ unit }) {
       <div
         className="hover:cursor-pointer"
         onClick={() => {
-          alert('are you sure you want to mark this completed?');
           createNewReport('pass');
         }}
       >
@@ -90,7 +91,6 @@ function PathUnitSection({ unit }) {
       <div
         className="hover:cursor-pointer"
         onClick={() => {
-          alert('are you sure you want to mark this failed?');
           createNewReport('fail');
         }}
       >

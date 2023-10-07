@@ -31,6 +31,11 @@ function CurrentUserPath() {
   const [path, setPath] = useState(null);
   const [dateOffest, setDateOffset] = useState(0);
   const [validForDate, setValidForDate] = useState(null);
+  const [reFetchState, setReFetchState] = useState(false);
+
+  const reFetch = () => {
+    setReFetchState((prevState) => !prevState);
+  };
 
   const calculateDateFromOffest = () => {
     const currentDate = new Date();
@@ -86,7 +91,7 @@ function CurrentUserPath() {
     if (path) {
       fetchValid();
     }
-  }, [path]);
+  }, [date, path, reFetchState]);
 
   const renderValidity = () => (validForDate ? <Check extraClasses="text-green-600" /> : <X extraClasses="text-red-600" />);
 
@@ -110,7 +115,7 @@ function CurrentUserPath() {
           <div className="border-t border-gray-100">
             <dl className="divide-y divide-gray-100">
               { path && path.path_units.map((unit) => (
-                <PathUnitSection key={unit.name} unit={unit} />
+                <PathUnitSection key={unit.name} unit={unit} reFetchPath={reFetch} />
               ))}
             </dl>
           </div>

@@ -38,6 +38,6 @@ class Path < ApplicationRecord
   end
 
   def valid_for_date?(date)
-    path_units.all? { |pu| pu.path_unit_reports.where(date: date).present? }
+    path_units.all? { |pu| pu.path_unit_reports.where(date: date, status: 'pass').present? }
   end
 end
