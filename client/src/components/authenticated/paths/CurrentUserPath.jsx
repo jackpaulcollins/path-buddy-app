@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable camelcase */
+
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,7 +15,9 @@ import CurrentUserPathDescriptionSection from './CurrentUserPathDescriptionSecti
 import PathUnitSection from './PathUnitSection';
 import LeftCarrot from '../../../assets/icons/LeftCarrot';
 import RightCarrot from '../../../assets/icons/RightCarrot';
-import ComponentLoading from '../../general/ComponentLoading';
+import FullScreenLoading from '../../general/FullScreenLoading';
+import Check from '../../../assets/icons/Check';
+import X from '../../../assets/icons/X';
 
 function CurrentUserPath() {
   const location = useLocation();
@@ -26,57 +27,68 @@ function CurrentUserPath() {
   const user = useSelector(selectCurrentUser);
   const [fetchPath] = useFetchPathMutation();
   const [fetchValidity] = useValidOnDateMutation();
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [path, setPath] = useState(null);
   const [dateOffest, setDateOffset] = useState(0);
+  const [validForDate, setValidForDate] = useState(null);
 
   const calculateDateFromOffest = () => {
     const currentDate = new Date();
-
     // eslint-disable-next-line max-len
     const offSetDate = dateOffest >= 0 ? addDays(currentDate, dateOffest) : subDays(currentDate, (dateOffest * -1));
 
     return format(toDate(offSetDate, { timeZone: user.time_zone }), 'MMMM d, yyyy');
   };
 
+  const date = calculateDateFromOffest();
+
+  const getCurrentUserPath = async () => {
+    const response = await fetchPath(user.id).unwrap();
+    if (response.status === 200) {
+      setPath(response.data.path);
+    } else if (response.status === 204) {
+      dispatch(setFlash({ title: 'Information', message: "You haven't created a path yet!", icon: 'info' }));
+      navigate('/dashboard/new-path');
+    }
+  };
+
+  const getCurrentDateValidity = async (pathId, currDate) => {
+    const response = await fetchValidity({ id: pathId, date: currDate }).unwrap();
+    const { validity } = response.data;
+    setValidForDate(validity);
+  };
+
   useEffect(() => {
     setLoading(true);
-    const date = calculateDateFromOffest();
     dispatch(setDate({ date }));
 
-    if (!fromRouteData) {
-      const getCurrentUserPath = async () => {
-        if (user) {
-          const response = await fetchPath(user.id).unwrap();
+    const fetchData = async () => {
+      if (!fromRouteData) {
+        await getCurrentUserPath();
+      } else {
+        setPath(fromRouteData.path);
+      }
+    };
 
-          if (response.status === 200) {
-            setPath(response.data.path);
-          } else if (response.status === 204) {
-            dispatch(setFlash({ title: 'Information', message: "You haven't created a path yet!", icon: 'info' }));
-            navigate('/dashboard/new-path');
-          }
-        }
-      };
-
-      const getCurrentDateValidity = async (pathId) => {
-        const valid = await fetchValidity({ id: pathId, date });
-        console.log(valid);
-      };
-
-      getCurrentUserPath().then(() => {
-        getCurrentDateValidity(path.id, date);
-      });
-    } else {
-      setPath(fromRouteData.path);
-      getCurrentDateValidity();
-    }
-
+    fetchData();
     setLoading(false);
   }, [dateOffest]);
 
   const handleDateChange = (change) => {
     setDateOffset((prev) => prev + change);
   };
+
+  useEffect(() => {
+    const fetchValid = async () => {
+      await getCurrentDateValidity(path.id, date);
+    };
+
+    if (path) {
+      fetchValid();
+    }
+  }, [path]);
+
+  const renderValidity = () => (validForDate ? <Check extraClasses="text-green-600" /> : <X extraClasses="text-red-600" />);
 
   const content = () => {
     if (path && !loading) {
@@ -85,6 +97,7 @@ function CurrentUserPath() {
           <div className="inline-flex w-full justify-evenly">
             <div onClick={() => handleDateChange(-1)}><LeftCarrot /></div>
             <div className="inline-flex">
+              {validForDate != null ? renderValidity() : ''}
               <h1 className="font-semibold">{calculateDateFromOffest()}</h1>
             </div>
             <div onClick={() => handleDateChange(1)}><RightCarrot /></div>
@@ -105,7 +118,7 @@ function CurrentUserPath() {
       );
     }
 
-    return <ComponentLoading />;
+    return <FullScreenLoading />;
   };
 
   return content();
