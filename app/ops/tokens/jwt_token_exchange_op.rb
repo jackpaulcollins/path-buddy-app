@@ -2,6 +2,7 @@
 
 module Tokens
   class JwtTokenExchangeOp < BaseOp
+    class TokenExpiredError < StandardError; end
     string :token
     outputs :user
 
@@ -10,14 +11,12 @@ module Tokens
     def perform
       parsed_token = attempt_to_parse_token(token)
 
-      if parsed_token.is_a?(Array)
-        claims = parsed_token.first
-        user = find_user(claims['data'])
-        verify_jti(user, claims['jti'])
-        return output :user, user
-      end
+      return unless parsed_token.is_a?(Array)
 
-      output :user, nil
+      claims = parsed_token.first
+      user = find_user(claims['data'])
+      verify_jti(user, claims['jti'])
+      output :user, user
     end
 
     def find_user(user_id)
@@ -31,9 +30,12 @@ module Tokens
     def attempt_to_parse_token(token)
       s = ENV['JWT_SECRET_KEY']
       a = ENV['JWT_ALGORITHM']
-      JWT.decode token, s, a
-    rescue JWT::ExpiredSignature
-      'Token Expired'
+
+      begin
+        JWT.decode(token, s, a)
+      rescue JWT::ExpiredSignature
+        raise TokenExpiredError, 'Token Expired'
+      end
     end
   end
 end

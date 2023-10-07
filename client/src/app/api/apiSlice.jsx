@@ -22,6 +22,10 @@ const baseQuery = fetchBaseQuery({
       return { status, data: null, headers };
     }
 
+    if (status === 403) {
+      window.location.href = '/login';
+    }
+
     const data = await response.json();
     return { status, data, headers };
   },

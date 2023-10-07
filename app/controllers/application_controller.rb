@@ -12,8 +12,11 @@ class ApplicationController < ActionController::API
 
     return unauthorized! unless match_data
 
-    token = match_data[1]
-    Tokens::JwtTokenExchangeOp.submit!(token: token).user
+    begin
+      Tokens::JwtTokenExchangeOp.submit!(token: match_data[1]).user
+    rescue Tokens::JwtTokenExchangeOp::TokenExpiredError
+      unauthorized!
+    end
   end
 
   def unauthorized!
