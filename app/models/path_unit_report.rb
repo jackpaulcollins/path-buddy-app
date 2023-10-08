@@ -6,4 +6,8 @@ class PathUnitReport < ApplicationRecord
 
   validates :status, presence: true
   validates_uniqueness_of :date, scope: :path_unit_id
+
+  def toggle_status!
+    pass? ? fail! : pass!
+  end
 end

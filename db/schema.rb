@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_04_062758) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_08_030415) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "status", ["pass", "fail"]
+
+  create_table "path_evaluations", force: :cascade do |t|
+    t.date "date", null: false
+    t.bigint "path_id", null: false
+    t.integer "status", default: 0
+    t.integer "integer", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["path_id", "date"], name: "index_path_evaluations_on_path_id_and_date", unique: true
+    t.index ["path_id"], name: "index_path_evaluations_on_path_id"
+  end
 
   create_table "path_unit_reports", force: :cascade do |t|
     t.bigint "path_unit_id", null: false
@@ -64,6 +79,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_04_062758) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "path_evaluations", "paths"
   add_foreign_key "path_unit_reports", "path_units"
   add_foreign_key "path_units", "paths"
   add_foreign_key "paths", "users"

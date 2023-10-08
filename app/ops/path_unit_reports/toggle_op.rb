@@ -20,42 +20,50 @@ module PathUnitReports
     protected
 
     def perform
-      # handles event in which user has clicked the same polarity twice, allowing them to 'delete' the report
-      if existing_report.present?
-        destroy_existing_report
-        return output :report, nil
+      if (report = existing_report)
+        update_existing_report
+      else
+        create_report
       end
 
-      maybe_destroy_opposite_report
-      report = create_report
+      maybe_create_eval
       output :report, report
     end
 
     def existing_report
-      path_unit.path_unit_reports.find_by(date: date, status: status)
+      path_unit.path_unit_reports.find_by(date: date)
     end
     memoize :existing_report
 
-    def destroy_existing_report
-      existing_report.destroy!
+    def update_existing_report
+      if existing_report.status == status && !existing_report.unanswered?
+        existing_report.unanswered!
+      elsif existing_report.unanswered?
+        existing_report.update!(status: status)
+      else
+        existing_report.toggle_status!
+      end
     end
 
-    def maybe_destroy_opposite_report
-      opposing_status = opposite_status(status)
-      opposing_report = path_unit.path_unit_reports.find_by(date: date, status: opposing_status)
-
-      return unless opposing_report
-
-      opposing_report.destroy!
-    end
-
-    def opposite_status(status)
-      status == 'pass' ? 'fail' : 'pass'
+    def opposing_status(_status)
+      existing_report.status == 'pass' ? 'fail' : 'pass'
     end
 
     def create_report
-      pu = path_unit.path_unit_reports.new(date: date, status: status)
-      pu.save!
+      path_unit.path_unit_reports.create!(date: date, status: status)
     end
+
+    def maybe_create_eval
+      return unless path.all_units_answered_for_date?(date)
+
+      status = path.valid_for_date?(date) ? 'pass' : 'fail'
+
+      ::Paths::CreatePathEvaluationOp.submit!(status: status, path: path, date: date)
+    end
+
+    def path
+      path_unit.path
+    end
+    memoize :path
   end
 end

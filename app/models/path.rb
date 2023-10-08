@@ -3,6 +3,7 @@
 class Path < ApplicationRecord
   belongs_to :user
   has_many :path_units, dependent: :destroy
+  has_many :path_evaluations, dependent: :destroy
 
   validates :name, presence: true
   validates :state, presence: true
@@ -39,5 +40,11 @@ class Path < ApplicationRecord
 
   def valid_for_date?(date)
     path_units.all? { |pu| pu.path_unit_reports.where(date: date, status: 'pass').present? }
+  end
+
+  def all_units_answered_for_date?(date)
+    path_units.all? do |pu|
+      pu.path_unit_reports.where(date: date, status: %w[pass fail]).present?
+    end
   end
 end
