@@ -8,7 +8,7 @@ import {
   toDate, format, addDays, subDays,
 } from 'date-fns';
 import { selectCurrentUser } from '../../../features/auth/authSlice';
-import { useFetchPathMutation, useValidOnDateMutation } from '../../../features/paths/pathApiSlice';
+import { useFetchPathMutation, useValidOnDateMutation, useCurrentStreakMutation } from '../../../features/paths/pathApiSlice';
 import { setFlash } from '../../../features/notifications/notificationsSlice';
 import { setDate } from '../../../features/paths/pathStatsSlice';
 import CurrentUserPathDescriptionSection from './CurrentUserPathDescriptionSection';
@@ -27,11 +27,13 @@ function CurrentUserPath() {
   const user = useSelector(selectCurrentUser);
   const [fetchPath] = useFetchPathMutation();
   const [fetchValidity] = useValidOnDateMutation();
+  const [fetchStreak] = useCurrentStreakMutation();
   const [loading, setLoading] = useState(true);
   const [path, setPath] = useState(null);
   const [dateOffest, setDateOffset] = useState(0);
   const [validForDate, setValidForDate] = useState(null);
   const [reFetchState, setReFetchState] = useState(false);
+  const [currentStreak, setCurrentStreak] = useState(null);
 
   const reFetch = () => {
     setReFetchState((prevState) => !prevState);
@@ -63,6 +65,12 @@ function CurrentUserPath() {
     setValidForDate(validity);
   };
 
+  const getCurrentStreak = async (pathId) => {
+    const response = await fetchStreak({ id: pathId }).unwrap();
+    const { streak } = response.data;
+    setCurrentStreak(streak);
+  };
+
   useEffect(() => {
     setLoading(true);
     dispatch(setDate({ date }));
@@ -88,8 +96,13 @@ function CurrentUserPath() {
       await getCurrentDateValidity(path.id, date);
     };
 
+    const fetchCurrentStreak = async () => {
+      await getCurrentStreak(path.id);
+    };
+
     if (path) {
       fetchValid();
+      fetchCurrentStreak();
     }
   }, [date, path, reFetchState]);
 
@@ -109,7 +122,11 @@ function CurrentUserPath() {
           </div>
           <CurrentUserPathDescriptionSection
             details={{
-              name: path.name, why: path.why, startDate: path.start_date, endDate: path.end_date,
+              name: path.name,
+              why: path.why,
+              startDate: path.start_date,
+              endDate: path.end_date,
+              streak: currentStreak,
             }}
           />
           <div className="border-t border-gray-100">

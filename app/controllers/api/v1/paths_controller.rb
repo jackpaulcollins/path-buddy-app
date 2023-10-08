@@ -47,7 +47,6 @@ module Api
         @current_user = validate_user!
       end
 
-      # rubocop:disable Metrics/MethodLength
       def path_params
         params.require(:path).permit(
           :path_name,
@@ -62,7 +61,6 @@ module Api
           ]
         )
       end
-      # rubocop:enable Metrics/MethodLength
     end
   end
 end

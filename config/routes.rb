@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
       get 'path_unit_reports', to: 'path_unit_reports#fetch_by_day'
       post 'path_unit_reports', to: 'path_unit_reports#create_or_toggle'
+
+      get 'streak', to: 'path_streaks#current_streak'
     end
   end
 end

@@ -21,6 +21,12 @@ export const pathApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    currentStreak: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/streak?id=${data.id}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -28,4 +34,5 @@ export const {
   useCreatePathMutation,
   useFetchPathMutation,
   useValidOnDateMutation,
+  useCurrentStreakMutation,
 } = pathApiSlice;

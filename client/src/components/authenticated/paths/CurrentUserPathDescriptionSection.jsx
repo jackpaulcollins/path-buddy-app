@@ -1,7 +1,6 @@
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
 import PropTypes from 'prop-types';
 import TextBubble from '../../../assets/icons/TextBubble';
-import PathStreakSection from './PathStreakSection';
 
 function CurrentUserPathDescriptionSection({ details }) {
   CurrentUserPathDescriptionSection.propTypes = {
@@ -10,11 +9,12 @@ function CurrentUserPathDescriptionSection({ details }) {
       why: PropTypes.string,
       startDate: PropTypes.string,
       endDate: PropTypes.string,
+      streak: PropTypes.number,
     }),
   };
 
   const {
-    name, why, startDate, endDate,
+    name, why, startDate, endDate, streak,
   } = details;
 
   return (
@@ -48,7 +48,14 @@ function CurrentUserPathDescriptionSection({ details }) {
         </div>
       </dl>
       <div className="w-1/8">
-        <PathStreakSection />
+        <div>
+          <dl>
+            <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+              <dt className="truncate text-sm font-medium text-gray-500">Current Streak</dt>
+              <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{streak}</dd>
+            </div>
+          </dl>
+        </div>
       </div>
     </div>
   );
