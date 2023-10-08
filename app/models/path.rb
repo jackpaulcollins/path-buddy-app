@@ -39,12 +39,17 @@ class Path < ApplicationRecord
   end
 
   def valid_for_date?(date)
-    path_units.all? { |pu| pu.path_unit_reports.where(date: date, status: 'pass').present? }
+    path_units
+      .where
+      .not(id: PathUnitReport.where(date: date, status: 'pass').pluck(:path_unit_id))
+      .empty?
   end
 
   def all_units_answered_for_date?(date)
-    path_units.all? do |pu|
-      pu.path_unit_reports.where(date: date, status: %w[pass fail]).present?
-    end
+    reported_units_count = path_units
+                            .joins(:path_unit_reports)
+                            .where(path_unit_reports: { date: date, status: %w[pass fail] })
+                            .count
+    reported_units_count == path_units.count
   end
 end
