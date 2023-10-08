@@ -38,6 +38,7 @@ module PathUnitReports
     def update_existing_report
       if existing_report.status == status && !existing_report.unanswered?
         existing_report.unanswered!
+        maybe_mark_existing_eval_incomplete
       elsif existing_report.unanswered?
         existing_report.update!(status: status)
       else
@@ -52,6 +53,17 @@ module PathUnitReports
     def create_report
       path_unit.path_unit_reports.create!(date: date, status: status)
     end
+
+    def maybe_mark_existing_eval_incomplete
+      return unless existing_eval
+
+      existing_eval.incomplete! if existing_eval.pass? || existing_eval.fail?
+    end
+
+    def existing_eval
+      PathEvaluation.find_by(path: path, date: date)
+    end
+    memoize :existing_eval
 
     def maybe_create_eval
       return unless path.all_units_answered_for_date?(date)

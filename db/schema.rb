@@ -22,7 +22,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_08_030415) do
     t.date "date", null: false
     t.bigint "path_id", null: false
     t.integer "status", default: 0
-    t.integer "integer", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["path_id", "date"], name: "index_path_evaluations_on_path_id_and_date", unique: true
