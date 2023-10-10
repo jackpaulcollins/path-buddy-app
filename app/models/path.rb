@@ -47,9 +47,9 @@ class Path < ApplicationRecord
 
   def all_units_answered_for_date?(date)
     reported_units_count = path_units
-                            .joins(:path_unit_reports)
-                            .where(path_unit_reports: { date: date, status: %w[pass fail] })
-                            .count
+                           .joins(:path_unit_reports)
+                           .where(path_unit_reports: { date: date, status: %w[pass fail] })
+                           .count
     reported_units_count == path_units.count
   end
 end
