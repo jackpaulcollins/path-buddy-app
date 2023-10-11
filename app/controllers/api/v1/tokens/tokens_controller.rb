@@ -8,8 +8,6 @@ module Api
           op = ::Tokens::JwtTokenExchangeOp.submit!(token: token_params)
 
           if op.user.present?
-            new_token = ::Tokens::GenerateJwtTokenOp.submit!(user: op.user).token
-            append_token_to_response(new_token)
             render json: { user: UserSerializer.new(op.user).serializable_hash[:data][:attributes], status: 200 }
           else
             render status: :forbidden
