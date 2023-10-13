@@ -20,38 +20,21 @@ module PathUnitReports
     protected
 
     def perform
-      if (report = existing_report)
-        update_existing_report
-      else
-        create_report
-      end
-
+      report = path_unit.path_unit_reports.find_or_create_by(date: date)
+      maybe_update_report(report)
       maybe_create_eval
       output :report, report
     end
 
-    def existing_report
-      path_unit.path_unit_reports.find_by(date: date)
-    end
-    memoize :existing_report
-
-    def update_existing_report
-      if existing_report.status == status && !existing_report.unanswered?
-        existing_report.unanswered!
+    def maybe_update_report(report)
+      if report.status == status && !report.unanswered?
+        report.unanswered!
         maybe_mark_existing_eval_incomplete
-      elsif existing_report.unanswered?
-        existing_report.update!(status: status)
+      elsif report.unanswered?
+        report.update!(status: status)
       else
-        existing_report.toggle_status!
+        report.toggle_status!
       end
-    end
-
-    def opposing_status(_status)
-      existing_report.status == 'pass' ? 'fail' : 'pass'
-    end
-
-    def create_report
-      path_unit.path_unit_reports.create!(date: date, status: status)
     end
 
     def maybe_mark_existing_eval_incomplete
