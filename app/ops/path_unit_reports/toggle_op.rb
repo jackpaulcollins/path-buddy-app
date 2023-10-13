@@ -27,7 +27,7 @@ module PathUnitReports
     end
 
     def maybe_update_report(report)
-      if report.status == status && !report.unanswered?
+      if report.status == status && report.answered?
         report.unanswered!
         maybe_mark_existing_eval_incomplete
       elsif report.unanswered?
