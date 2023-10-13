@@ -6,7 +6,8 @@ module Paths
   class CurrentStreakOp < BaseOp
     include ::Subroutine::AssociationFields
     association :path
-    date :date, default: Date.today
+    association :user
+    date :date
     outputs :streak
 
     protected
@@ -18,7 +19,7 @@ module Paths
     def current_streak
       streak = 0
       keep_going = true
-      start_date = date
+      start_date = Time.current.in_time_zone(user.time_zone).to_date
 
       while keep_going
         if path.valid_for_date?(start_date)
