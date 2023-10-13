@@ -20,7 +20,7 @@ module PathUnitReports
     protected
 
     def perform
-      report = path_unit.path_unit_reports.find_or_create_by(date: date)
+      report = reports.find_or_create_by(date: date)
       maybe_update_report(report)
       maybe_create_eval
       output :report, report
@@ -35,6 +35,10 @@ module PathUnitReports
       else
         report.toggle_status!
       end
+    end
+
+    def reports
+      path_unit.path_unit_reports
     end
 
     def maybe_mark_existing_eval_incomplete
