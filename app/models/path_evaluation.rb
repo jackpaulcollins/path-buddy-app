@@ -10,4 +10,8 @@ class PathEvaluation < ApplicationRecord
   def toggle_status!
     pass? ? fail! : pass!
   end
+
+  def completed?
+    !incomplete?
+  end
 end

@@ -10,4 +10,8 @@ class PathUnitReport < ApplicationRecord
   def toggle_status!
     pass? ? fail! : pass!
   end
+
+  def answered?
+    !unanswered
+  end
 end

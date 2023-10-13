@@ -40,7 +40,7 @@ module PathUnitReports
     def maybe_mark_existing_eval_incomplete
       return unless existing_eval
 
-      existing_eval.incomplete! if existing_eval.pass? || existing_eval.fail?
+      existing_eval.incomplete! if existing_eval.completed?
     end
 
     def existing_eval
