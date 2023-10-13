@@ -12,6 +12,6 @@ class PathUnitReport < ApplicationRecord
   end
 
   def answered?
-    !unanswered
+    !unanswered?
   end
 end
