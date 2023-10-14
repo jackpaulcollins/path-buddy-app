@@ -21,7 +21,7 @@ module Api
         if op.path.present?
           render json: { path: PathSerializer.new(op.path).serializable_hash[:data][:attributes] }, status: :ok
         elsif op.path.nil? && op.errors.empty?
-          render json: {}, status: :no_content
+          head :no_content
         else
           render json: { errors: op.errors.full_messages }, status: :unprocessable_entity
         end
