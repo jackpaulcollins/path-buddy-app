@@ -45,6 +45,12 @@ class Path < ApplicationRecord
       .empty?
   end
 
+  def failed_for_date?(date)
+    path_units
+      .where(id: PathUnitReport.where(date: date, status: 'fail').pluck(:path_unit_id))
+      .any?
+  end
+
   def all_units_answered_for_date?(date)
     reported_units_count = path_units
                            .joins(:path_unit_reports)
