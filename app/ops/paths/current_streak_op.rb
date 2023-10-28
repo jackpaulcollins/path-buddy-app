@@ -19,6 +19,8 @@ module Paths
     def current_streak
       keep_going = true
       today = Time.current.in_time_zone(user.time_zone).to_date
+
+      # don't break a streak just becase today hasn't been marked complete yet
       completed_today = path.valid_for_date?(today)
       start_date = completed_today ? today : today - 1.day
 
