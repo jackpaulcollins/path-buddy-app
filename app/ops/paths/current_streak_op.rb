@@ -17,9 +17,9 @@ module Paths
     end
 
     def current_streak
-      streak = 0
       keep_going = true
       start_date = Time.current.in_time_zone(user.time_zone).to_date
+      streak = path.valid_for_date?(start_date) ? 1 : 0
 
       while keep_going
         if path.valid_for_date?(start_date)
