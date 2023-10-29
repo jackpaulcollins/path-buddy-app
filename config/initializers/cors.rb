@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'https://localhost:3000', 'https://path-buddy-client.vercel.app'
+    origins 'http://localhost:3000', 'https://path-buddy-client.vercel.app'
 
     resource '/api/v1/*',
              headers: :any,
